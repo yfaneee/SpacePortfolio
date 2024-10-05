@@ -3,6 +3,10 @@ body {
     overflow: hidden;
     font-family: "Sixtyfour", sans-serif;   
     color: white;
+    user-select: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
 }
   
 canvas {
@@ -24,6 +28,26 @@ canvas {
     top: 80px;
     font-size: 26px;
     display: flex;
+}
+
+#reset-camera {
+    font-family: "Sixtyfour", sans-serif;
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    background-color: transparent;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid #4e59ff;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+#reset-camera:hover {
+    background-color: #4e59ff;
 }
 
 #menu {

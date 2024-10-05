@@ -160,6 +160,36 @@ document.addEventListener('wheel', (e) => {
     targetZoom = Math.max(5, Math.min(targetZoom, 100));
 });
 
+const initialCameraPosition = new THREE.Vector3(0, 0, 50);
+const initialCameraRotation = new THREE.Euler(0, 0, 0, 'XYZ');
+
+camera.position.copy(initialCameraPosition);
+camera.rotation.copy(initialCameraRotation);
+const resetButton = document.getElementById('reset-camera');
+
+function resetCamera() {
+    camera.position.copy(initialCameraPosition);
+    camera.rotation.copy(initialCameraRotation);
+    targetZoom = initialCameraPosition.z; 
+    targetRotationX = initialCameraRotation.x;
+    targetRotationY = initialCameraRotation.y;
+    resetButton.style.display = 'none'; 
+    title.style.display = 'flex';
+}
+
+resetButton.addEventListener('click', resetCamera);
+
+function checkCameraMovement() {
+    const cameraMoved = !camera.position.equals(initialCameraPosition) || 
+                        !camera.rotation.equals(initialCameraRotation);
+
+    if (cameraMoved) {
+        resetButton.style.display = 'block';
+    } else {
+        resetButton.style.display = 'none'; 
+    }
+}
+
 function animate() {
     requestAnimationFrame(animate);
 
@@ -183,6 +213,7 @@ function animate() {
     }
 
     renderer.render(scene, camera);
+    checkCameraMovement();
     checkMenuVisibility();
 }
 
