@@ -63,10 +63,7 @@ function createCircleTexture() {
 
 function createPlanet() {
     const geometry = new THREE.SphereGeometry(14, 128, 128);
-    const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('static/earth.png');
-
-    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const material = new THREE.MeshBasicMaterial({ color: 0x001420 });
     const planet = new THREE.Mesh(geometry, material);
     scene.add(planet);
     
@@ -78,25 +75,74 @@ createStarField();
 const planet = createPlanet();
 camera.position.set(0, 0, 50);
 
+let isMoving = {
+    up: false,
+    down: false,
+    left: false,
+    right: false
+};
+
+const moveSpeed = 0.2;
+const zoomSpeed = 0.05;
+
+// Smoothing factors for rotation
+const rotationSpeed = 0.002; 
+const smoothFactor = 0.1;   
+
+let targetRotationX = camera.rotation.x;
+let targetRotationY = camera.rotation.y;
+
+document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+        case 'w':
+            isMoving.up = true;
+            break;
+        case 's':
+            isMoving.down = true;
+            break;
+        case 'a':
+            isMoving.left = true;
+            break;
+        case 'd':
+            isMoving.right = true;
+            break;
+    }
+});
+
+document.addEventListener('keyup', (e) => {
+    switch (e.key) {
+        case 'w':
+            isMoving.up = false;
+            break;
+        case 's':
+            isMoving.down = false;
+            break;
+        case 'a':
+            isMoving.left = false;
+            break;
+        case 'd':
+            isMoving.right = false;
+            break;
+    }
+});
+
+// Mouse dragging camera rotation
 let isDragging = false;
 let previousMousePosition = { x: 0, y: 0 };
 
 document.addEventListener('mousedown', (e) => {
     isDragging = true;
-    previousMousePosition = { x: e.clientX, y: e.clientY };
 });
 
 document.addEventListener('mousemove', (e) => {
     if (isDragging) {
-        const deltaX = e.clientX - previousMousePosition.x;
-        const deltaY = e.clientY - previousMousePosition.y;
+        const deltaX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+        const deltaY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
 
-        // Adjust the camera position instead of rotation
-        camera.position.x -= deltaX * 0.1; // Move left/right
-        camera.position.y += deltaY * 0.1; // Move up/down
-        
-        // Update previous mouse position
-        previousMousePosition = { x: e.clientX, y: e.clientY };
+        targetRotationY -= deltaX * rotationSpeed;
+        targetRotationX -= deltaY * rotationSpeed;
+
+        targetRotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, targetRotationX));
     }
 });
 
@@ -104,32 +150,54 @@ document.addEventListener('mouseup', () => {
     isDragging = false;
 });
 
+const scrollSpeed = 0.05;
+let targetZoom = camera.position.z;  
+
 document.addEventListener('wheel', (e) => {
-    // Zoom in/out based on the scroll direction
-    camera.position.z += e.deltaY * 0.05; // Adjust zoom speed here
-    // Limit zoom range to avoid going too close or too far
-    camera.position.z = Math.max(5, Math.min(camera.position.z, 100)); // Prevent going too close or too far
+    targetZoom += e.deltaY * scrollSpeed;
+
+    // Clamp the target zoom to the desired range
+    targetZoom = Math.max(5, Math.min(targetZoom, 100));
 });
 
 function animate() {
     requestAnimationFrame(animate);
+
+    const zoomLerpFactor = 0.1; 
+    camera.position.z += (targetZoom - camera.position.z) * zoomLerpFactor;
+
+    camera.rotation.x += (targetRotationX - camera.rotation.x) * smoothFactor;
+    camera.rotation.y += (targetRotationY - camera.rotation.y) * smoothFactor;
+
+    if (isMoving.up) {
+        camera.position.y += moveSpeed;
+    }
+    if (isMoving.down) {
+        camera.position.y -= moveSpeed;
+    }
+    if (isMoving.left) {
+        camera.position.x -= moveSpeed;
+    }
+    if (isMoving.right) {
+        camera.position.x += moveSpeed;
+    }
+
     renderer.render(scene, camera);
-    
     checkMenuVisibility();
 }
 
-function checkMenuVisibility() { 
+function checkMenuVisibility() {
     const menu = document.getElementById('menu');
     const zoom = document.getElementById('zoom');
     const title = document.getElementById('title');
     const distance = camera.position.distanceTo(planet.position);
-    
-    if (distance < 35.5) { // Change this value as needed
+
+    if (distance < 35.5) {
         menu.style.display = 'flex';
-        zoom.style.display = 'none'; 
-        title.style.display = 'none'; 
+        zoom.style.display = 'none';
+        title.style.display = 'none';
     } else {
-        menu.style.display = 'none';   
+        menu.style.display = 'none';
     }
 }
 
