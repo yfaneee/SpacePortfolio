@@ -61,9 +61,10 @@ function createCircleTexture() {
   return texture;
 }
 
+// Function to create the planet 
 function createPlanet() {
-    const geometry = new THREE.SphereGeometry(14, 128, 128);
-    const material = new THREE.MeshBasicMaterial({ color: 0x001420 });
+    const geometry = new THREE.SphereGeometry(20, 164, 164);
+    const material = new THREE.MeshBasicMaterial({ color: 0x3b8bad });
     const planet = new THREE.Mesh(geometry, material);
     scene.add(planet);
     
@@ -75,6 +76,7 @@ createStarField();
 const planet = createPlanet();
 camera.position.set(0, 0, 50);
 
+// Function for camera movement with W,A,S,D
 let isMoving = {
     up: false,
     down: false,
@@ -155,11 +157,10 @@ let targetZoom = camera.position.z;
 
 document.addEventListener('wheel', (e) => {
     targetZoom += e.deltaY * scrollSpeed;
-
-    // Clamp the target zoom to the desired range
-    targetZoom = Math.max(5, Math.min(targetZoom, 100));
+    targetZoom = Math.max(5, Math.min(targetZoom, 150));
 });
 
+// Function to reset the camera 
 const initialCameraPosition = new THREE.Vector3(0, 0, 50);
 const initialCameraRotation = new THREE.Euler(0, 0, 0, 'XYZ');
 
@@ -195,7 +196,6 @@ function animate() {
 
     const zoomLerpFactor = 0.1; 
     camera.position.z += (targetZoom - camera.position.z) * zoomLerpFactor;
-
     camera.rotation.x += (targetRotationX - camera.rotation.x) * smoothFactor;
     camera.rotation.y += (targetRotationY - camera.rotation.y) * smoothFactor;
 
