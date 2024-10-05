@@ -50,3 +50,22 @@ canvas {
 #menu a:hover {
     background: rgba(255, 255, 255, 0.2);
 }
+
+@media (max-width: 1566px) {
+    #menu {
+        top: 250px;
+        left: 490px;
+    }
+
+    #menu a {
+        font-size: 20px;
+    }  
+
+    #title{
+        left: 510px;
+    }
+    
+    #zoom{
+        left: 600px;
+    }
+}
