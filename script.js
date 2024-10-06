@@ -12,6 +12,7 @@ function createStarField() {
   const geometry = new THREE.BufferGeometry();
   const vertices = [];
   const colors = [];
+  const velocities = [];
   
   // Generate random star positions
   for (let i = 0; i < 400000; i++) {
@@ -21,12 +22,19 @@ function createStarField() {
 
     vertices.push(x, y, z);
 
+    velocities.push(
+        THREE.MathUtils.randFloat(-0.1, 0.1), 
+        THREE.MathUtils.randFloat(-0.1, 0.1), 
+        THREE.MathUtils.randFloat(-0.1, 0.1)  
+    );
+
     const color = new THREE.Color(Math.random(), Math.random(), Math.random());
     colors.push(color.r, color.g, color.b);
   }
 
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
 
   // Basic star material with circle shape
   const starMaterial = new THREE.PointsMaterial({
@@ -40,7 +48,10 @@ function createStarField() {
 
   const stars = new THREE.Points(geometry, starMaterial);
   scene.add(stars);
+  return stars;
 }
+
+let stars = createStarField();  
 
 // Function to create a circular texture 
 function createCircleTexture() {
@@ -61,6 +72,17 @@ function createCircleTexture() {
   return texture;
 }
 
+// Hover effect for constellations
+const tooltip = document.createElement('div');
+tooltip.style.position = 'absolute';
+tooltip.style.padding = '5px';
+tooltip.style.color = 'white';
+tooltip.style.background = 'rgba(0, 0, 0, 0.7)';
+tooltip.style.borderRadius = '3px';
+tooltip.style.display = 'none';  
+tooltip.style.pointerEvents = 'none'; 
+document.body.appendChild(tooltip);
+
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const starGroups = [];
@@ -68,34 +90,34 @@ const starGroups = [];
 // Create constellations for Learning Outcomes
 function createLearningOutcomesConstellations() {
     const constellations = [
-        { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]] },  
-        { positions: [[250, 219, -62], [263, 224, -61], [242, 231, -61]] }, 
-        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -64]] }, 
-        { positions: [[290, 234, -63], [302, 242, -62], [285, 229, -57], [296, 245, -60]] }, 
-        { positions: [[310, 203, -60], [322, 231, -60], [316, 221, -56]] },  
+        { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning Outcome 1' },  
+        { positions: [[250, 219, -62], [263, 224, -61], [242, 231, -61]], name: 'Learning Outcome 2' }, 
+        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -64]], name: 'Learning Outcome 3' }, 
+        { positions: [[290, 234, -63], [302, 242, -62], [285, 229, -57], [296, 245, -60]], name: 'Learning Outcome 4' }, 
+        { positions: [[310, 203, -60], [322, 231, -60], [316, 221, -56]], name: 'Learning Outcome 5' },  
     ];
 
     constellations.forEach(group => {
-        createStarGroup(group.positions, 'Learning Outcome');
+        createStarGroup(group.positions, group.name);
     });
 }
 
 // Create constellations for Projects
 function createProjectsConstellations() {
     const constellations = [
-        { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]] },  
-        { positions: [[-250, 230, -62], [-263, 216, -60], [-275, 223, -60]] }, 
-        { positions: [[-286, 205, -69], [-291, 211, -62], [-300, 198, -63]] },  
-        { positions: [[-310, 239, -63], [-319, 245, -59], [-333, 230, -62]] },   
+        { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]], name: 'Project 1' },  
+        { positions: [[-250, 230, -62], [-263, 216, -60], [-275, 223, -60]], name: 'Project 2' }, 
+        { positions: [[-286, 205, -69], [-291, 211, -62], [-300, 198, -63]], name: 'Project 3' },  
+        { positions: [[-310, 239, -63], [-319, 245, -59], [-333, 230, -62]], name: 'Project 4' },   
     ];
 
     constellations.forEach(group => {
-        createStarGroup(group.positions, 'Project');
+        createStarGroup(group.positions, group.name);
     });
 }
 
 // Create a group of stars
-function createStarGroup(positions, type) {
+function createStarGroup(positions, name) {
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
 
@@ -115,24 +137,45 @@ function createStarGroup(positions, type) {
 
     scene.add(line);
     
-    starGroups.push({ stars, type });
+    starGroups.push({ stars, line, name, starMaterial, lineMaterial });
 }
 
-// Handle mouse click
-document.addEventListener('click', (event) => {
+document.addEventListener('mousemove', (event) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(starGroups.map(group => group.stars));
+    const objectsToCheck = starGroups.flatMap(group => [group.stars, group.line]);
+    const intersects = raycaster.intersectObjects(objectsToCheck);
 
     if (intersects.length > 0) {
-        const clickedGroup = starGroups.find(group => group.stars === intersects[0].object);
-        console.log(`${clickedGroup.type} clicked!`);
-        alert(`${clickedGroup.type} clicked!`)
+        const firstIntersectedObject = intersects[0].object;
+        
+        const hoveredGroup = starGroups.find(group => 
+            group.stars === firstIntersectedObject || group.line === firstIntersectedObject
+        );
+
+        if (hoveredGroup) {
+            console.log(`Hovered over: ${hoveredGroup.name}`); 
+            tooltip.innerText = hoveredGroup.name;
+            tooltip.style.display = 'block';  
+            tooltip.style.left = `${event.clientX + 10}px`;
+            tooltip.style.top = `${event.clientY + 10}px`;
+
+            hoveredGroup.stars.material.color.set(0xff0000);  
+            hoveredGroup.line.material.color.set(0xff0000);  
+        }
+    } else {
+        tooltip.style.display = 'none';
+
+        starGroups.forEach(group => {
+            group.stars.material.color.set(0xffffff);  
+            group.line.material.color.set(0xffffff);  
+        });
     }
 });
+// Create constellations
+createProjectsConstellations();
 
 // Function to create the planet 
 function createPlanet() {
@@ -306,6 +349,25 @@ function isCameraNearTarget() {
 
 function animate() {
     requestAnimationFrame(animate);
+
+    const positions = stars.geometry.attributes.position.array;
+    const velocities = stars.geometry.attributes.velocity.array;
+
+    for (let i = 0; i < positions.length; i += 3) {
+        positions[i] += velocities[i];    
+        positions[i + 1] += velocities[i + 1]; 
+        positions[i + 2] += velocities[i + 2]; 
+
+        if (positions[i] > 2500) positions[i] = -2500;
+        if (positions[i + 1] > 2500) positions[i + 1] = -2500;
+        if (positions[i + 2] > 2500) positions[i + 2] = -2500;
+
+        if (positions[i] < -2500) positions[i] = 2500;
+        if (positions[i + 1] < -2500) positions[i + 1] = 2500;
+        if (positions[i + 2] < -2500) positions[i + 2] = 2500;
+    }
+
+    stars.geometry.attributes.position.needsUpdate = true; 
 
     if (isZoomingOut && !zoomPhaseCompleted) {
         camera.position.z += (cameraZoomOutDistance - camera.position.z) * 0.03; 
