@@ -174,8 +174,6 @@ document.addEventListener('mousemove', (event) => {
         });
     }
 });
-// Create constellations
-createProjectsConstellations();
 
 // Function to create the planet 
 function createPlanet() {
