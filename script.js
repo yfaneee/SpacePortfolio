@@ -93,8 +93,8 @@ function createLearningOutcomesConstellations() {
         { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning Outcome 1' },  
         { positions: [[250, 219, -62], [263, 224, -61], [242, 231, -61]], name: 'Learning Outcome 2' }, 
         { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -64]], name: 'Learning Outcome 3' }, 
-        { positions: [[290, 234, -63], [302, 242, -62], [285, 229, -57], [296, 245, -60]], name: 'Learning Outcome 4' }, 
-        { positions: [[310, 203, -60], [322, 231, -60], [316, 221, -56]], name: 'Learning Outcome 5' },  
+        { positions: [[290, 234, -63], [302, 242, -62], [277, 240, -57], [312, 251, -60]], name: 'Learning Outcome 4' }, 
+        { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning Outcome 5' },  
     ];
 
     constellations.forEach(group => {
@@ -107,7 +107,7 @@ function createProjectsConstellations() {
     const constellations = [
         { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]], name: 'Project 1' },  
         { positions: [[-250, 230, -62], [-263, 216, -60], [-275, 223, -60]], name: 'Project 2' }, 
-        { positions: [[-286, 205, -69], [-291, 211, -62], [-300, 198, -63]], name: 'Project 3' },  
+        { positions: [[-286, 205, -69], [-310, 211, -62], [-300, 198, -63]], name: 'Project 3' },  
         { positions: [[-310, 239, -63], [-319, 245, -59], [-333, 230, -62]], name: 'Project 4' },   
     ];
 
@@ -140,6 +140,22 @@ function createStarGroup(positions, name) {
     starGroups.push({ stars, line, name, starMaterial, lineMaterial });
 }
 
+// onclick lo's/projects
+document.addEventListener('click', (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(starGroups.map(group => group.stars));
+
+    if (intersects.length > 0) {
+        const clickedGroup = starGroups.find(group => group.stars === intersects[0].object);
+        alert(`${clickedGroup.name} clicked!`)
+    }
+});
+
+// hover lo's/projects
 document.addEventListener('mousemove', (event) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -154,7 +170,7 @@ document.addEventListener('mousemove', (event) => {
         const hoveredGroup = starGroups.find(group => 
             group.stars === firstIntersectedObject || group.line === firstIntersectedObject
         );
-
+    
         if (hoveredGroup) {
             console.log(`Hovered over: ${hoveredGroup.name}`); 
             tooltip.innerText = hoveredGroup.name;
@@ -162,8 +178,8 @@ document.addEventListener('mousemove', (event) => {
             tooltip.style.left = `${event.clientX + 10}px`;
             tooltip.style.top = `${event.clientY + 10}px`;
 
-            hoveredGroup.stars.material.color.set(0xff0000);  
-            hoveredGroup.line.material.color.set(0xff0000);  
+            hoveredGroup.stars.material.color.set(0x660033);  
+            hoveredGroup.line.material.color.set(0x272757);  
         }
     } else {
         tooltip.style.display = 'none';
@@ -368,7 +384,7 @@ function animate() {
     stars.geometry.attributes.position.needsUpdate = true; 
 
     if (isZoomingOut && !zoomPhaseCompleted) {
-        camera.position.z += (cameraZoomOutDistance - camera.position.z) * 0.03; 
+        camera.position.z += (cameraZoomOutDistance - camera.position.z) * 0.04; 
         if (Math.abs(camera.position.z - cameraZoomOutDistance) < 0.1) {
             isZoomingOut = false;
             zoomPhaseCompleted = true;

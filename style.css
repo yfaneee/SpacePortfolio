@@ -75,6 +75,15 @@ canvas {
     background: rgba(255, 255, 255, 0.2);
 }
 
+.tooltip {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.tooltip.visible {
+    opacity: 1;
+}
+
 @media (max-width: 1566px) {
     #menu {
         top: 250px;
