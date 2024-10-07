@@ -84,6 +84,75 @@ canvas {
     opacity: 1;
 }
 
+#menu-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* Fullscreen Overlay */
+#overlay {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    z-index: 900;
+    transition: opacity 0.5s ease;
+}
+
+#overlay.visible {
+    opacity: 1;
+    z-index: 900;
+}
+
+/* Dropdown Menu */
+#dropdown-menu {
+    display: none; 
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    z-index: 1001;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#dropdown-menu.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#dropdown-menu li {
+    margin: 0;
+    list-style: none;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #444;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#dropdown-menu li:hover {
+    background-color: #666;
+}
+
 @media (max-width: 1566px) {
     #menu {
         top: 250px;

@@ -7,6 +7,71 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// Function to show/hide overlay and dropdown menu
+const menuIcon = document.getElementById('menu-icon');
+const overlay = document.getElementById('overlay');
+const dropdownMenu = document.getElementById('dropdown-menu');
+
+function toggleMenu() {
+    overlay.classList.toggle('visible');
+    dropdownMenu.classList.toggle('visible');
+
+    if (dropdownMenu.classList.contains('visible')) {
+        dropdownMenu.style.display = 'block';
+        overlay.style.display = 'block';
+        setTimeout(() => {
+            dropdownMenu.style.opacity = '1';    
+            dropdownMenu.style.transform = 'translateY(0)'; 
+            overlay.style.opacity = '1';        
+        }, 0);
+    } else {
+        dropdownMenu.style.opacity = '0';      
+        dropdownMenu.style.transform = 'translateY(-20px)'; 
+        overlay.style.opacity = '0';            
+        setTimeout(() => {
+            dropdownMenu.style.display = 'none';
+            overlay.style.display = 'none';
+        }, 300); 
+    }
+}
+
+menuIcon.addEventListener('click', toggleMenu);
+
+function closeMenu() {
+    overlay.classList.remove('visible');
+    dropdownMenu.classList.remove('visible');
+    dropdownMenu.style.display = 'none';
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+        overlay.style.display = 'none';
+    }, 300);
+}
+
+// Link menu items to camera movements
+const homeMenuItem = document.getElementById('home');
+const learningOutcomesMenuItem = document.getElementById('learning-outcomes');
+const projectsMenuItem = document.getElementById('projects');
+homeMenuItem.addEventListener('click', () => {
+    closeMenu();
+    moveCameraTo(cameraTargets.home); 
+});
+
+learningOutcomesMenuItem.addEventListener('click', () => {
+    closeMenu();
+    moveCameraTo(cameraTargets.learningOutcomes);  
+});
+
+projectsMenuItem.addEventListener('click', () => {
+    closeMenu();
+    moveCameraTo(cameraTargets.projects);  
+});
+
+document.addEventListener('click', (event) => {
+    if (!dropdownMenu.contains(event.target) && !menuIcon.contains(event.target)) {
+        closeMenu();  // Close the menu if clicked outside
+    }
+});
+
 // Create stars 
 function createStarField() {
   const geometry = new THREE.BufferGeometry();
@@ -127,7 +192,7 @@ function createStarGroup(positions, name) {
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
-    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 3 });
+    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 4 });
     const stars = new THREE.Points(geometry, starMaterial);
 
     scene.add(stars);
@@ -331,7 +396,8 @@ let zoomPhaseCompleted = false;
 
 const cameraTargets = {
     projects: new THREE.Vector3(-280, 220, 50), 
-    learningOutcomes: new THREE.Vector3(266, 215, 50), 
+    learningOutcomes: new THREE.Vector3(266, 215, 50),
+    home: new THREE.Vector3(0, 0, 50), 
     initial: new THREE.Vector3(0, 0, 50) 
 };
 
