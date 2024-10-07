@@ -444,7 +444,7 @@ function isCameraNearTarget() {
 }
 
 let orbitRadius = 50;  
-let orbitSpeed = 0.001; 
+let orbitSpeed = 0.02; 
 let orbitTime = Math.random() * Math.PI * 2;
 
 function animateOrbitingPlanet() {
