@@ -53,16 +53,22 @@ const learningOutcomesMenuItem = document.getElementById('learning-outcomes');
 const projectsMenuItem = document.getElementById('projects');
 homeMenuItem.addEventListener('click', () => {
     closeMenu();
+    zoom.style.display = 'none';
+    title.style.display = 'none';
     moveCameraTo(cameraTargets.home); 
 });
 
 learningOutcomesMenuItem.addEventListener('click', () => {
     closeMenu();
+    zoom.style.display = 'none';
+    title.style.display = 'none';
     moveCameraTo(cameraTargets.learningOutcomes);  
 });
 
 projectsMenuItem.addEventListener('click', () => {
     closeMenu();
+    zoom.style.display = 'none';
+    title.style.display = 'none';
     moveCameraTo(cameraTargets.projects);  
 });
 
@@ -155,11 +161,11 @@ const starGroups = [];
 // Create constellations for Learning Outcomes
 function createLearningOutcomesConstellations() {
     const constellations = [
-        { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning Outcome 1' },  
-        { positions: [[250, 219, -62], [263, 224, -61], [242, 231, -61]], name: 'Learning Outcome 2' }, 
-        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -64]], name: 'Learning Outcome 3' }, 
-        { positions: [[290, 234, -63], [302, 242, -62], [277, 240, -57], [312, 251, -60]], name: 'Learning Outcome 4' }, 
-        { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning Outcome 5' },  
+        { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning outcome 1: Interactive Media Products' },  
+        { positions: [[250, 219, -62], [263, 224, -61], [242, 231, -61]], name: 'Learning outcome 2: Development and Version control' }, 
+        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -64]], name: 'Learning outcome 3: Iterative design' }, 
+        { positions: [[290, 234, -63], [302, 242, -62], [277, 240, -57], [312, 251, -60]], name: 'Learning outcome 4: Professional standard' }, 
+        { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning outcome 5: Personal Leadership' },  
     ];
 
     constellations.forEach(group => {
@@ -170,7 +176,7 @@ function createLearningOutcomesConstellations() {
 // Create constellations for Projects
 function createProjectsConstellations() {
     const constellations = [
-        { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]], name: 'Project 1' },  
+        { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]], name: 'Veneman en de Groot - Branding Project' },  
         { positions: [[-250, 230, -62], [-263, 216, -60], [-275, 223, -60]], name: 'Project 2' }, 
         { positions: [[-286, 205, -69], [-310, 211, -62], [-300, 198, -63]], name: 'Project 3' },  
         { positions: [[-310, 239, -63], [-319, 245, -59], [-333, 230, -62]], name: 'Project 4' },   
@@ -267,7 +273,17 @@ function createPlanet() {
     return planet;
 }
 
+function createOrbitingPlanet() {
+    const geometry = new THREE.SphereGeometry(5, 32, 32); 
+    const material = new THREE.MeshBasicMaterial({ color: 0xaaaaaa }); 
+    const orbitingPlanet = new THREE.Mesh(geometry, material);
+    scene.add(orbitingPlanet);
+    
+    return orbitingPlanet;
+}
+
 createStarField();
+const orbitingPlanet = createOrbitingPlanet();
 const planet = createPlanet();
 createLearningOutcomesConstellations();
 createProjectsConstellations();
@@ -281,7 +297,7 @@ let isMoving = {
     right: false
 };
 
-const moveSpeed = 0.2;
+const moveSpeed = 0.7;
 const zoomSpeed = 0.05;
 
 // Smoothing factors for rotation
@@ -349,7 +365,7 @@ document.addEventListener('mouseup', () => {
     isDragging = false;
 });
 
-const scrollSpeed = 0.05;
+const scrollSpeed = 0.07;
 let targetZoom = camera.position.z;  
 
 document.addEventListener('wheel', (e) => {
@@ -427,8 +443,23 @@ function isCameraNearTarget() {
     return distance < 0.1; 
 }
 
+let orbitRadius = 50;  
+let orbitSpeed = 0.001; 
+let orbitTime = Math.random() * Math.PI * 2;
+
+function animateOrbitingPlanet() {
+    orbitTime += orbitSpeed;  
+
+    const x = orbitRadius * Math.sin(orbitTime);  
+    const y = orbitRadius * Math.sin(orbitTime * 0.5);  
+    const z = orbitRadius * Math.cos(orbitTime);
+
+    orbitingPlanet.position.set(planet.position.x + x, planet.position.y + y, planet.position.z + z);
+}
+
 function animate() {
     requestAnimationFrame(animate);
+    animateOrbitingPlanet();
 
     const positions = stars.geometry.attributes.position.array;
     const velocities = stars.geometry.attributes.velocity.array;
