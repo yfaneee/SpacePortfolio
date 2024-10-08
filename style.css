@@ -1,3 +1,4 @@
+/* general css + non selectable css */
 body {
     margin: 0;
     overflow: hidden;
@@ -30,6 +31,7 @@ canvas {
     display: flex;
 }
 
+/* Reset camera bttn */
 #reset-camera {
     font-family: "Sixtyfour", sans-serif;
     display: none;
@@ -50,6 +52,7 @@ canvas {
     background-color: #4e59ff;
 }
 
+/* Main Planet Menu */
 #menu {
     position: absolute;
     top: 300px;

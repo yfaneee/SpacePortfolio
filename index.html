@@ -11,6 +11,7 @@
 </head>
 <body>
 
+    <!-- Titles -->
     <div id="title">
         <h1>Welcome</h1>
     </div>
@@ -18,6 +19,7 @@
         <p>Zoom In</p>
     </div>
 
+    <!-- DropDown Menu -->
     <div id="menu-icon">
         <svg width="66" height="45" viewBox="0 0 66 45" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="1" width="64" height="9" stroke="#4E59FF" stroke-width="2" fill="none" />
@@ -25,8 +27,6 @@
             <rect x="1" y="35" width="64" height="9" stroke="#4E59FF" stroke-width="2" fill="none" />
         </svg>            
     </div>
-    
-    <div id="overlay" class="hidden"></div>
     
     <nav id="dropdown-menu" class="hidden">
     <ul>
@@ -36,16 +36,19 @@
         <li id="learning-outcomes">Learning Outcomes</li>
     </ul>
     </nav>
+    <div id="overlay" class="hidden"></div>
 
-
+    <!-- Planet Menu -->
     <section id="menu">
         <a href="#projects">Projects</a>
         <a href="#learning-outcomes">Learning Outcomes</a>
         <a href="#artwork">Artwork</a>
     </section>
 
+    <!-- ResetCamera Bttn -->
     <button id="reset-camera">Reset Camera</button>
 
+    <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
 </body>

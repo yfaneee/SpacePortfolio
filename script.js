@@ -313,6 +313,7 @@ const smoothFactor = 0.1;
 let targetRotationX = camera.rotation.x;
 let targetRotationY = camera.rotation.y;
 
+// WASD input
 document.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'w':
@@ -371,6 +372,7 @@ document.addEventListener('mouseup', () => {
     isDragging = false;
 });
 
+// Scroll function
 const scrollSpeed = 0.07;
 let targetZoom = camera.position.z;  
 
@@ -409,6 +411,7 @@ function checkCameraMovement() {
     }
 }
 
+// Function for navigation through learning outcomes and projects
 const cameraZoomOutDistance = 200;
 const zoomInDistance = 50;  
 const zoomDuration = 1000; 
@@ -452,6 +455,7 @@ let orbitRadius = 50;
 let orbitSpeed = 0.02; 
 let orbitTime = Math.random() * Math.PI * 2;
 
+// Function for animating orbiting planet
 function animateOrbitingPlanet() {
     orbitTime += orbitSpeed;  
 
@@ -462,6 +466,7 @@ function animateOrbitingPlanet() {
     orbitingPlanet.position.set(planet.position.x + x, planet.position.y + y, planet.position.z + z);
 }
 
+// Function for animations
 function animate() {
     requestAnimationFrame(animate);
     animateOrbitingPlanet();
@@ -485,6 +490,7 @@ function animate() {
 
     stars.geometry.attributes.position.needsUpdate = true; 
 
+    // Condition for navigation with zooming in and out
     if (isZoomingOut && !zoomPhaseCompleted) {
         camera.position.z += (cameraZoomOutDistance - camera.position.z) * 0.07; 
         if (Math.abs(camera.position.z - cameraZoomOutDistance) < 0.1) {
@@ -533,7 +539,7 @@ function animate() {
     checkMenuVisibility();
 }
 
-
+// Function for menu on planet zoom
 function checkMenuVisibility() {
     const menu = document.getElementById('menu');
     const zoom = document.getElementById('zoom');
