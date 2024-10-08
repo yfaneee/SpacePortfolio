@@ -24,6 +24,7 @@ function toggleMenu() {
             dropdownMenu.style.transform = 'translateY(0)'; 
             overlay.style.opacity = '1';        
         }, 0);
+        menuIcon.classList.add('menu-open');
     } else {
         dropdownMenu.style.opacity = '0';      
         dropdownMenu.style.transform = 'translateY(-20px)'; 
@@ -32,6 +33,7 @@ function toggleMenu() {
             dropdownMenu.style.display = 'none';
             overlay.style.display = 'none';
         }, 300); 
+        menuIcon.classList.remove('menu-open');
     }
 }
 
@@ -56,13 +58,15 @@ homeMenuItem.addEventListener('click', () => {
     zoom.style.display = 'none';
     title.style.display = 'none';
     moveCameraTo(cameraTargets.home); 
+    menuIcon.classList.remove('menu-open');
 });
 
 learningOutcomesMenuItem.addEventListener('click', () => {
     closeMenu();
     zoom.style.display = 'none';
     title.style.display = 'none';
-    moveCameraTo(cameraTargets.learningOutcomes);  
+    moveCameraTo(cameraTargets.learningOutcomes);
+    menuIcon.classList.remove('menu-open');  
 });
 
 projectsMenuItem.addEventListener('click', () => {
@@ -70,11 +74,13 @@ projectsMenuItem.addEventListener('click', () => {
     zoom.style.display = 'none';
     title.style.display = 'none';
     moveCameraTo(cameraTargets.projects);  
+    menuIcon.classList.remove('menu-open');
 });
 
 document.addEventListener('click', (event) => {
     if (!dropdownMenu.contains(event.target) && !menuIcon.contains(event.target)) {
-        closeMenu();  // Close the menu if clicked outside
+        closeMenu();  
+        menuIcon.classList.remove('menu-open');
     }
 });
 
@@ -388,7 +394,6 @@ function resetCamera() {
     targetRotationX = initialCameraRotation.x;
     targetRotationY = initialCameraRotation.y;
     resetButton.style.display = 'none'; 
-    title.style.display = 'flex';
 }
 
 resetButton.addEventListener('click', resetCamera);
@@ -481,7 +486,7 @@ function animate() {
     stars.geometry.attributes.position.needsUpdate = true; 
 
     if (isZoomingOut && !zoomPhaseCompleted) {
-        camera.position.z += (cameraZoomOutDistance - camera.position.z) * 0.04; 
+        camera.position.z += (cameraZoomOutDistance - camera.position.z) * 0.07; 
         if (Math.abs(camera.position.z - cameraZoomOutDistance) < 0.1) {
             isZoomingOut = false;
             zoomPhaseCompleted = true;

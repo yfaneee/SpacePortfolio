@@ -92,6 +92,19 @@ canvas {
     z-index: 1000;
 }
 
+#menu-icon svg rect {
+    transition: fill 0.3s ease;
+    fill: none; 
+}
+
+#menu-icon:hover svg rect {
+    fill: #4E59FF;
+}
+
+#menu-icon.menu-open svg rect {
+    fill: #4E59FF;
+}
+
 /* Fullscreen Overlay */
 #overlay {
     position: fixed;
@@ -134,7 +147,6 @@ canvas {
 }
 
 #dropdown-menu ul {
-    text-align: center;
     list-style: none;
     padding: 0;
     margin: 0;
