@@ -169,6 +169,73 @@ canvas {
     background-color: #666;
 }
 
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #4e59ff;
+}
+
+header h2 {
+    color: #555;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Content Sections */
+.content-section {
+    margin-bottom: 30px;
+}
+
+.content-section h2 {
+    font-size: 1.8em;
+    color: #333;
+    border-bottom: 2px solid #4e59ff;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* Layout for Text and SVG */
+.content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.text {
+    flex: 2;
+}
+
+.svg, .image-gallery {
+    flex: 1;
+}
+
+.image-gallery img {
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    font-size: 0.9em;
+    margin-top: 20px;
+}
+
 @media (max-width: 1566px) {
     #menu {
         top: 220px;

@@ -168,9 +168,9 @@ const starGroups = [];
 function createLearningOutcomesConstellations() {
     const constellations = [
         { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning outcome 1: Interactive Media Products', id: 'learningOutcome1' },
-        { positions: [[250, 219, -62], [263, 224, -61], [242, 231, -61]], name: 'Learning outcome 2: Development and Version control', id: 'learningOutcome2' },
-        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -64]], name: 'Learning outcome 3: Iterative design', id: 'learningOutcome3' },
-        { positions: [[290, 234, -63], [302, 242, -62], [277, 240, -57], [312, 251, -60]], name: 'Learning outcome 4: Professional standard', id: 'learningOutcome4' },
+        { positions: [[250, 219, -57], [263, 224, -59], [242, 231, -60]], name: 'Learning outcome 2: Development and Version control', id: 'learningOutcome2' },
+        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -56]], name: 'Learning outcome 3: Iterative design', id: 'learningOutcome3' },
+        { positions: [[290, 234, -58], [302, 242, -59], [277, 240, -57], [312, 251, -60]], name: 'Learning outcome 4: Professional standard', id: 'learningOutcome4' },
         { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning outcome 5: Personal Leadership', id: 'learningOutcome5' }
     ];
 
@@ -183,9 +183,9 @@ function createLearningOutcomesConstellations() {
 function createProjectsConstellations() {
     const constellations = [
         { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]], name: 'Veneman en de Groot - Branding Project', id: 'project1' },
-        { positions: [[-250, 230, -62], [-263, 216, -60], [-275, 223, -60]], name: 'Project 2', id: 'project2' },
-        { positions: [[-286, 205, -69], [-310, 211, -62], [-300, 198, -63]], name: 'Project 3', id: 'project3' },
-        { positions: [[-310, 239, -63], [-319, 245, -59], [-333, 230, -62]], name: 'Project 4', id: 'project4' }  
+        { positions: [[-250, 230, -60], [-263, 216, -58], [-275, 223, -60]], name: 'Project 2', id: 'project2' },
+        { positions: [[-286, 205, -59], [-310, 211, -60], [-300, 198, -55]], name: 'Project 3', id: 'project3' },
+        { positions: [[-310, 239, -60], [-319, 245, -59], [-333, 230, -57]], name: 'Project 4', id: 'project4' }  
     ];
 
     constellations.forEach(group => {
@@ -216,20 +216,25 @@ function createStarGroup(positions, name, id) {
 
 function smoothZoomTo(targetPosition, onComplete) {
     const zoomSpeed = 0.02; 
+    const finalZoomDistance = 10; 
 
     function animateZoom() {
+        const distanceToTarget = camera.position.distanceTo(targetPosition);
+        
         camera.position.lerp(targetPosition, zoomSpeed);
 
-        const distanceToTarget = camera.position.distanceTo(targetPosition);
-        if (distanceToTarget < 0.5) {  
+        camera.position.z -= zoomSpeed * 301;
+        camera.rotation.z += 0.002;
+        if (distanceToTarget < finalZoomDistance || camera.position.z <= targetPosition.z) {
+            camera.position.copy(targetPosition); 
             if (onComplete) onComplete(); 
-            return;
+            
+        } else {
+            renderer.render(scene, camera);
+            requestAnimationFrame(animateZoom);
         }
-
-        renderer.render(scene, camera);
-        requestAnimationFrame(animateZoom);
     }
-
+    
     animateZoom();
 }
 
