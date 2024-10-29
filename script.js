@@ -215,15 +215,15 @@ function createStarGroup(positions, name, id) {
 }
 
 function smoothZoomTo(targetPosition, onComplete) {
-    const zoomSpeed = 1; 
+    const zoomSpeed = 0.02; 
 
     function animateZoom() {
         camera.position.lerp(targetPosition, zoomSpeed);
 
         const distanceToTarget = camera.position.distanceTo(targetPosition);
-        if (distanceToTarget < 0.1) {
+        if (distanceToTarget < 0.5) {  
             if (onComplete) onComplete(); 
-            return; 
+            return;
         }
 
         renderer.render(scene, camera);
