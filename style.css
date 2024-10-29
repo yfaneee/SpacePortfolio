@@ -1,4 +1,11 @@
 /* general css + non selectable css */
+@font-face {
+    font-family: 'A-Space Regular Demo';
+    src: url('fonts/Radaro.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     margin: 0;
     overflow: hidden;
@@ -170,12 +177,13 @@ canvas {
 }
 
 header {
+    font-family: 'A-Space Regular Demo', sans-serif;
     text-align: center;
     margin-bottom: 20px;
 }
 
 header h1 {
-    font-size: 2.5em;
+    font-size: 2.9em;
     color: #4e59ff;
 }
 
@@ -186,7 +194,8 @@ header h2 {
 }
 
 main {
-    max-width: 1100px;
+    font-family: 'A-Space Regular Demo', sans-serif;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -200,7 +209,7 @@ main {
 }
 
 .content-section h2 {
-    font-size: 1.8em;
+    font-size: 2em;
     color: #333;
     border-bottom: 2px solid #4e59ff;
     padding-bottom: 5px;
@@ -215,6 +224,7 @@ main {
 }
 
 .text {
+    font-size: 1.4em;
     flex: 2;
 }
 
@@ -222,8 +232,15 @@ main {
     flex: 1;
 }
 
+.image-gallery {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 20px; 
+}
+
 .image-gallery img {
-    max-width: 100%;
+    max-width: 50%;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin: 10px 0;

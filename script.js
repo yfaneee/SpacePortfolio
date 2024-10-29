@@ -283,7 +283,7 @@ function closeDocumentation() {
 }
 
 document.body.insertAdjacentHTML('beforeend', `
-    <div id="documentation" style="display:none; position:absolute; top:0; right:0; width:100%; height:100%; background-color:rgba(255,255,255,1); color:black; padding:20px; overflow-y:auto;">
+    <div id="documentation" style="display:none; position:absolute; top:0; right:0; width:100%; height:100%; background-color:rgba(255,255,255,0.8); color:black; padding:20px; overflow-y:auto;">
         <!-- Content will be loaded dynamically -->
     </div>
 `);
