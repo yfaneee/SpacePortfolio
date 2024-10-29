@@ -171,8 +171,8 @@ canvas {
 
 @media (max-width: 1566px) {
     #menu {
-        top: 250px;
-        left: 490px;
+        top: 220px;
+        left: 480px;
     }
 
     #menu a {
@@ -180,10 +180,10 @@ canvas {
     }  
 
     #title{
-        left: 510px;
+        left: 500px;
     }
     
     #zoom{
-        left: 600px;
+        left: 580px;
     }
 }

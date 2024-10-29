@@ -167,43 +167,41 @@ const starGroups = [];
 // Create constellations for Learning Outcomes
 function createLearningOutcomesConstellations() {
     const constellations = [
-        { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning outcome 1: Interactive Media Products' },  
-        { positions: [[250, 219, -62], [263, 224, -61], [242, 231, -61]], name: 'Learning outcome 2: Development and Version control' }, 
-        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -64]], name: 'Learning outcome 3: Iterative design' }, 
-        { positions: [[290, 234, -63], [302, 242, -62], [277, 240, -57], [312, 251, -60]], name: 'Learning outcome 4: Professional standard' }, 
-        { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning outcome 5: Personal Leadership' },  
+        { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning outcome 1: Interactive Media Products', id: 'learningOutcome1' },
+        { positions: [[250, 219, -62], [263, 224, -61], [242, 231, -61]], name: 'Learning outcome 2: Development and Version control', id: 'learningOutcome2' },
+        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -64]], name: 'Learning outcome 3: Iterative design', id: 'learningOutcome3' },
+        { positions: [[290, 234, -63], [302, 242, -62], [277, 240, -57], [312, 251, -60]], name: 'Learning outcome 4: Professional standard', id: 'learningOutcome4' },
+        { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning outcome 5: Personal Leadership', id: 'learningOutcome5' }
     ];
 
     constellations.forEach(group => {
-        createStarGroup(group.positions, group.name);
+        createStarGroup(group.positions, group.name, group.id);
     });
 }
 
 // Create constellations for Projects
 function createProjectsConstellations() {
     const constellations = [
-        { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]], name: 'Veneman en de Groot - Branding Project' },  
-        { positions: [[-250, 230, -62], [-263, 216, -60], [-275, 223, -60]], name: 'Project 2' }, 
-        { positions: [[-286, 205, -69], [-310, 211, -62], [-300, 198, -63]], name: 'Project 3' },  
-        { positions: [[-310, 239, -63], [-319, 245, -59], [-333, 230, -62]], name: 'Project 4' },   
+        { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]], name: 'Veneman en de Groot - Branding Project', id: 'project1' },
+        { positions: [[-250, 230, -62], [-263, 216, -60], [-275, 223, -60]], name: 'Project 2', id: 'project2' },
+        { positions: [[-286, 205, -69], [-310, 211, -62], [-300, 198, -63]], name: 'Project 3', id: 'project3' },
+        { positions: [[-310, 239, -63], [-319, 245, -59], [-333, 230, -62]], name: 'Project 4', id: 'project4' }  
     ];
 
     constellations.forEach(group => {
-        createStarGroup(group.positions, group.name);
+        createStarGroup(group.positions, group.name, group.id);
     });
 }
 
 // Create a group of stars
-function createStarGroup(positions, name) {
+function createStarGroup(positions, name, id) {
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
-
     positions.forEach(pos => {
         vertices.push(...pos);
     });
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-
     const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 4 });
     const stars = new THREE.Points(geometry, starMaterial);
 
@@ -213,24 +211,77 @@ function createStarGroup(positions, name) {
     const line = new THREE.Line(lineGeometry, lineMaterial);
 
     scene.add(line);
-    
-    starGroups.push({ stars, line, name, starMaterial, lineMaterial });
+    starGroups.push({ stars, line, name, starMaterial, lineMaterial, id });
 }
 
-// onclick lo's/projects
+function smoothZoomTo(targetPosition, onComplete) {
+    const zoomSpeed = 1; 
+
+    function animateZoom() {
+        camera.position.lerp(targetPosition, zoomSpeed);
+
+        const distanceToTarget = camera.position.distanceTo(targetPosition);
+        if (distanceToTarget < 0.1) {
+            if (onComplete) onComplete(); 
+            return; 
+        }
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animateZoom);
+    }
+
+    animateZoom();
+}
+
 document.addEventListener('click', (event) => {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-
     const intersects = raycaster.intersectObjects(starGroups.map(group => group.stars));
 
     if (intersects.length > 0) {
         const clickedGroup = starGroups.find(group => group.stars === intersects[0].object);
-        alert(`${clickedGroup.name} clicked!`)
+        const targetPosition = intersects[0].point;
+
+        smoothZoomTo(targetPosition, () => loadDocumentationHTML(clickedGroup.id));
     }
 });
+
+function loadDocumentationHTML(id) {
+    const documentationElement = document.getElementById('documentation');
+    menuIcon.style.display = 'none';
+
+    fetch(`docs/${id}.html`)
+        .then(response => response.text())
+        .then(htmlContent => {
+            documentationElement.innerHTML = `
+            <div style="display: flex; justify-content: flex-end; padding: 10px;">
+                <button onclick="closeDocumentation()">Close</button>
+            </div>
+            <div style="padding: 20px; margin: 10px;">
+                ${htmlContent}
+            </div>`;
+            documentationElement.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error loading documentation:', error);
+            documentationElement.innerHTML = '<p>Error loading content.</p>';
+            documentationElement.style.display = 'block';
+        });
+}
+
+function closeDocumentation() {
+    document.getElementById('documentation').style.display = 'none';
+    menuIcon.style.display = 'block';
+
+}
+
+document.body.insertAdjacentHTML('beforeend', `
+    <div id="documentation" style="display:none; position:absolute; top:0; right:0; width:100%; height:100%; background-color:rgba(255,255,255,1); color:black; padding:20px; overflow-y:auto;">
+        <!-- Content will be loaded dynamically -->
+    </div>
+`);
 
 // hover lo's/projects
 document.addEventListener('mousemove', (event) => {
