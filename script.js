@@ -49,30 +49,54 @@ function closeMenu() {
     }, 300);
 }
 
+// control the modal appearance
+document.addEventListener("DOMContentLoaded", () => {
+    const welcomeModal = document.getElementById("welcome-modal");
+    const closeModalButton = document.getElementById("close-modal");
+
+    setTimeout(() => {
+        welcomeModal.classList.add("show");
+    }, 400); 
+
+    closeModalButton.addEventListener("click", () => {
+        welcomeModal.classList.remove("show");
+    });
+});
+
+// Toggle info dropdown visibility
+const infoButton = document.getElementById('info-button');
+const infoDropdown = document.getElementById('info-dropdown');
+
+infoButton.addEventListener('click', () => {
+    infoDropdown.classList.toggle('visible');
+});
+
+// Close the dropdown if clicked outside
+document.addEventListener('click', (event) => {
+    if (!infoButton.contains(event.target) && !infoDropdown.contains(event.target)) {
+        infoDropdown.classList.remove('visible');
+    }
+});
+
 // Link menu items to camera movements
 const homeMenuItem = document.getElementById('home');
 const learningOutcomesMenuItem = document.getElementById('learning-outcomes');
+const submenuItems = document.querySelectorAll('.submenu li');
 const projectsMenuItem = document.getElementById('projects');
 homeMenuItem.addEventListener('click', () => {
     closeMenu();
-    zoom.style.display = 'none';
-    title.style.display = 'none';
     moveCameraTo(cameraTargets.home); 
     menuIcon.classList.remove('menu-open');
 });
 
 learningOutcomesMenuItem.addEventListener('click', () => {
     closeMenu();
-    zoom.style.display = 'none';
-    title.style.display = 'none';
     moveCameraTo(cameraTargets.learningOutcomes);
     menuIcon.classList.remove('menu-open');  
 });
 
 projectsMenuItem.addEventListener('click', () => {
     closeMenu();
-    zoom.style.display = 'none';
-    title.style.display = 'none';
     moveCameraTo(cameraTargets.projects);  
     menuIcon.classList.remove('menu-open');
 });
@@ -83,6 +107,14 @@ document.addEventListener('click', (event) => {
         menuIcon.classList.remove('menu-open');
     }
 });
+
+const outcomeTargets = {
+    outcome1: new THREE.Vector3(190, 204, -60),
+    outcome2: new THREE.Vector3(250, 219, -57),
+    outcome3: new THREE.Vector3(270, 190, -59),
+    outcome4: new THREE.Vector3(290, 234, -58),
+    outcome5: new THREE.Vector3(310, 203, -60)
+};
 
 // Create stars 
 function createStarField() {
@@ -598,14 +630,10 @@ function animate() {
 // Function for menu on planet zoom
 function checkMenuVisibility() {
     const menu = document.getElementById('menu');
-    const zoom = document.getElementById('zoom');
-    const title = document.getElementById('title');
     const distance = camera.position.distanceTo(planet.position);
 
     if (distance < 35.5) {
         menu.style.display = 'flex';
-        zoom.style.display = 'none';
-        title.style.display = 'none';
     } else {
         menu.style.display = 'none';
     }

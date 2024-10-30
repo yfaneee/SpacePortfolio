@@ -172,6 +172,38 @@ canvas {
     transition: background-color 0.3s;
 }
 
+#learning-outcomes .arrow {
+    float: right;
+    transition: transform 0.3s;
+}
+
+#learning-outcomes:hover .arrow {
+    transform: rotate(90deg);
+}
+
+/* Submenu styling */
+.submenu {
+    display: none;
+    list-style-type: none;
+    position: absolute;
+    top: 153px;
+    left: 10px;
+    background: #333;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+}
+
+.submenu li {
+    padding: 8px;
+    white-space: nowrap;
+}
+
+#learning-outcomes:hover .submenu,
+.submenu:hover {
+    display: block;
+}
+
 #dropdown-menu li:hover {
     background-color: #666;
 }
@@ -252,6 +284,184 @@ footer {
     font-size: 0.9em;
     margin-top: 20px;
 }
+
+/* Modal overlay styling */
+.welcome-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    z-index: 1000;
+}
+
+.welcome-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal content box styling */
+.modal-content {
+    background: #1a1a2e;
+    color: #ffffff;
+    padding: 30px;
+    max-width: 600px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.6);
+    animation: fadeInUp 1s ease forwards;
+}
+
+/* Heading and text styling */
+.modal-content h1 {
+    font-family: 'A-Space Regular Demo', sans-serif;
+    font-size: 2.6em;
+    margin-bottom: 10px;
+    color: #00d4ff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.702);
+}
+
+.modal-content p {
+    font-family: 'A-Space Regular Demo', sans-serif;
+    font-size: 1.5em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Button styling */
+.modal-content button {
+    font-family: 'A-Space Regular Demo', sans-serif;
+    padding: 10px 20px;
+    background-color: #00d4ffb3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+    background-color: #009ecf;
+}
+
+#info-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    perspective: 600px;
+    cursor: pointer;    
+}
+
+.cube {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    transform-style: preserve-3d;
+    transform-origin: center;
+    animation: rotateCube 5s infinite linear;
+}
+
+.face {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #4E59FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #FFF;
+    font-weight: bold;
+    border: 1px solid #333;
+}
+
+.front  { transform: translateZ(25px); }
+.back   { transform: rotateY(180deg) translateZ(25px); }
+.left   { transform: rotateY(-90deg) translateZ(25px); }
+.right  { transform: rotateY(90deg) translateZ(25px); }
+.top    { transform: rotateX(90deg) translateZ(25px); }
+.bottom { transform: rotateX(-90deg) translateZ(25px); }
+
+@keyframes rotateCube {
+    0%   { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+}
+
+/* Info Dropdown */
+#info-dropdown {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    width: 250px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show the dropdown */
+#info-dropdown.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+#info-dropdown h3 {
+    margin-top: 0;
+    color: #4E59FF;
+    font-size: 16px;
+}
+
+#info-dropdown ul {
+    list-style: none;
+    padding: 0;
+}
+
+.icon-container {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+#info-dropdown ul li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#info-dropdown ul li span {
+    font-size: 14px;
+    color: #fff;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 @media (max-width: 1566px) {
     #menu {

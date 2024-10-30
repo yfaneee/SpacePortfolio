@@ -11,14 +11,6 @@
 </head>
 <body>
 
-    <!-- Titles -->
-    <div id="title">
-        <h1>Welcome</h1>
-    </div>
-    <div id="zoom">
-        <p>Zoom In</p>
-    </div>
-
     <!-- DropDown Menu -->
     <div id="menu-icon">
         <svg width="66" height="45" viewBox="0 0 66 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,10 +25,95 @@
         <li id="home">Home</li>
         <li id="contact">Contact</li>
         <li id="projects">Projects</li>
-        <li id="learning-outcomes">Learning Outcomes</li>
+        <li id="learning-outcomes">Learning Outcomes
+            <span class="arrow">&#9656;</span>
+            <ul class="submenu hidden">
+                <li id="outcome1">Learning Outcome 1</li>
+                <li id="outcome2">Learning Outcome 2</li>
+                <li id="outcome3">Learning Outcome 3</li>
+                <li id="outcome4">Learning Outcome 4</li>
+                <li id="outcome5">Learning Outcome 5</li>
+            </ul>
+        </li>
     </ul>
     </nav>
     <div id="overlay" class="hidden"></div>
+
+    <!-- Info Button -->
+    <div id="info-button">
+        <div class="cube">
+        <div class="face front">i</div>
+        <div class="face back">i</div>
+        <div class="face left">i</div>
+        <div class="face right">i</div>
+        <div class="face top">i</div>
+        <div class="face bottom">i</div>
+        </div>
+    </div>
+
+    <!-- Info Dropdown -->
+    <div id="info-dropdown" class="hidden">
+        <h3>How to Navigate</h3>
+    <ul>
+        <li>
+            <div class="icon-container">    
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.05 4.575a1.575 1.575 0 1 0-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 0 1 3.15 0v1.5m-3.15 0 .075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 0 1 3.15 0V15M6.9 7.575a1.575 1.575 0 1 0-3.15 0v8.175a6.75 6.75 0 0 0 6.75 6.75h2.018a5.25 5.25 0 0 0 3.712-1.538l1.732-1.732a5.25 5.25 0 0 0 1.538-3.712l.003-2.024a.668.668 0 0 1 .198-.471 1.575 1.575 0 1 0-2.228-2.228 3.818 3.818 0 0 0-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0 1 16.35 15m.002 0h-.002" />
+                  </svg>                                  
+            </div>
+            <span>Rotate and explore</span>
+        </li>
+        <li>
+            <div class="icon-container">    
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                  </svg>                  
+            </div>
+            <span>Zoom in and out</span>
+        </li>
+        <li>
+            <div class="icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59" />
+                  </svg>                  
+            </div>
+            <span>Interact with constellations</span>
+        </li>
+        <li>
+            <div class="icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 100 100" fill="none">
+                    <rect x="30" y="5" width="44" height="27" rx="4" fill="#222" stroke="#FFF" stroke-width="2"/>
+                    <text x="50" y="22" font-family="Arial, sans-serif" font-size="16" fill="#FFF" text-anchor="middle" alignment-baseline="middle">W</text>
+                    <rect x="5" y="35" width="27" height="27" rx="4" fill="#222" stroke="#FFF" stroke-width="2"/>
+                    <text x="17.5" y="52" font-family="Arial, sans-serif" font-size="16" fill="#FFF" text-anchor="middle" alignment-baseline="middle">A</text>
+                    <rect x="30" y="35" width="44" height="27" rx="4" fill="#222" stroke="#FFF" stroke-width="2"/>
+                    <text x="50" y="52" font-family="Arial, sans-serif" font-size="16" fill="#FFF" text-anchor="middle" alignment-baseline="middle">S</text>
+                    <rect x="70" y="35" width="27" height="27" rx="4" fill="#222" stroke="#FFF" stroke-width="2"/>
+                    <text x="82.5" y="52" font-family="Arial, sans-serif" font-size="16" fill="#FFF" text-anchor="middle" alignment-baseline="middle">D</text>
+                </svg>
+            </div>
+            <span>Move camera position</span>
+        </li>
+        <li>
+            <div class="icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>                
+            </div>
+            <span>Reset camera</span>
+        </li>
+    </ul>
+    </div>
+
+    <!-- Welcome Message -->
+    <div id="welcome-modal" class="welcome-modal">
+        <div class="modal-content">
+            <h1>Welcome to my Portfolio</h1>
+            <p>Exploring the Universe of Interactive Media 🚀</p>
+            <p>Hi, I'm Luca! Here, you'll find my projects, creative works, and learning outcomes. Let's dive into my journey through the world of interactive media.</p>
+            <button id="close-modal">Enter the Site</button>
+        </div>
+    </div>
 
     <!-- Planet Menu -->
     <section id="menu">
