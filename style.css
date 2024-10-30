@@ -292,6 +292,12 @@ main {
     flex: 1;
 }
 
+.svg {
+    display: flex;
+    justify-content: center;
+    width: 100%; /* Ensures the SVG container takes full width */
+}
+
 .image-gallery {
     display: flex;
     justify-content: center; 
