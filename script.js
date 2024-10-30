@@ -224,7 +224,7 @@ function smoothZoomTo(targetPosition, onComplete) {
         camera.position.lerp(targetPosition, zoomSpeed);
 
         camera.position.z -= zoomSpeed * 301;
-        camera.rotation.z += 0.002;
+        camera.rotation.z += 0.001;
         if (distanceToTarget < finalZoomDistance || camera.position.z <= targetPosition.z) {
             camera.position.copy(targetPosition); 
             if (onComplete) onComplete(); 
