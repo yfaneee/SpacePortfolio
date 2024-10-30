@@ -116,6 +116,21 @@ const outcomeTargets = {
     outcome5: new THREE.Vector3(310, 203, -60)
 };
 
+
+submenuItems.forEach((item) => {
+    item.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+        closeMenu();
+
+        const targetPosition = outcomeTargets[item.id];
+        if (targetPosition) {
+            moveAndZoomToConstellation(targetPosition, () => {
+                console.log(`Reached ${item.id}`);
+            });
+        }
+    });
+});
+
 // Create stars 
 function createStarField() {
   const geometry = new THREE.BufferGeometry();
@@ -294,7 +309,7 @@ function loadDocumentationHTML(id) {
         .then(htmlContent => {
             documentationElement.innerHTML = `
             <div style="display: flex; justify-content: flex-end; padding: 10px;">
-                <button onclick="closeDocumentation()">Close</button>
+                <div class="close-icon" onclick="closeDocumentation()">X</div>
             </div>
             <div style="padding: 20px; margin: 10px;">
                 ${htmlContent}
@@ -315,7 +330,7 @@ function closeDocumentation() {
 }
 
 document.body.insertAdjacentHTML('beforeend', `
-    <div id="documentation" style="display:none; position:absolute; top:0; right:0; width:100%; height:100%; background-color:rgba(255,255,255,0.8); color:black; padding:20px; overflow-y:auto;">
+    <div id="documentation" style="display:none; position:absolute; top:0; right:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); color:black; padding:20px; overflow-y:auto; -ms-overflow-style: none; scrollbar-width: none;">
         <!-- Content will be loaded dynamically -->
     </div>
 `);

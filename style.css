@@ -1,4 +1,3 @@
-/* general css + non selectable css */
 @font-face {
     font-family: 'A-Space Regular Demo';
     src: url('fonts/Radaro.otf') format('truetype');
@@ -15,6 +14,14 @@ body {
     -webkit-user-select: none; 
     -moz-user-select: none; 
     -ms-user-select: none;
+}
+
+#documentation::-webkit-scrollbar {
+    display: none;
+}
+
+#documentation {
+    scrollbar-width: none;
 }
   
 canvas {
@@ -220,9 +227,30 @@ header h1 {
 }
 
 header h2 {
-    color: #555;
+    color: #ffffff;
     font-size: 1.1em;
     margin-top: 10px;
+}
+
+/* Close icon styling */
+.close-icon {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4E59FF;
+    cursor: pointer;
+    padding: 4px 10px;
+    transition: color 0.2s ease, transform 0.2s ease;
+    border-radius: 50%;
+}
+
+.close-icon:hover {
+    color: #FF5C5C;
+    transform: scale(1.1);
+}
+
+.close-icon:active {
+    color: #FF3A3A;
+    transform: scale(0.95);
 }
 
 main {
@@ -242,7 +270,7 @@ main {
 
 .content-section h2 {
     font-size: 2em;
-    color: #333;
+    color: #000000;
     border-bottom: 2px solid #4e59ff;
     padding-bottom: 5px;
     margin-bottom: 15px;
@@ -395,6 +423,37 @@ footer {
 @keyframes rotateCube {
     0%   { transform: rotateY(0deg); }
     100% { transform: rotateY(360deg); }
+}
+
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+    background-color: #4E59FF;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(78, 89, 255, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(78, 89, 255, 0.6);
+    background-color: #5E6AFF;
+}
+
+.button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(78, 89, 255, 0.3);
+}
+
+.button:focus {
+    outline: 2px solid #3C47D3;
+    outline-offset: 2px;
 }
 
 /* Info Dropdown */
