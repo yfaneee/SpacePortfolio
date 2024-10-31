@@ -444,6 +444,24 @@ function createPlanet() {
     return planet;
 }
 
+function createBigPlanet() {
+    const textureLoader = new THREE.TextureLoader();
+    const planetTexture = textureLoader.load('static/haira.jpg'); 
+
+    const geometry = new THREE.SphereGeometry(50, 328, 328);
+    const material = new THREE.MeshStandardMaterial({
+        map: planetTexture
+    });
+    
+    const planet = new THREE.Mesh(geometry, material);
+
+
+    planet.position.set(520, 420, -120);
+    scene.add(planet);
+    
+    return planet;
+}
+
 // Function to create the orbiting planet 
 function createOrbitingPlanet() {
     const textureLoader = new THREE.TextureLoader();
@@ -470,6 +488,7 @@ function createOrbitingPlanet() {
 createStarField();
 const orbitingPlanet = createOrbitingPlanet();
 const planet = createPlanet();
+const bigplanet = createBigPlanet();
 createLearningOutcomesConstellations();
 createProjectsConstellations();
 camera.position.set(0, 0, 50);

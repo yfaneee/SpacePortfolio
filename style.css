@@ -5,6 +5,20 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'neuropol';
+    src: url('fonts/neuropol\ x\ rg.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'nasi';
+    src: url('fonts/Nasi.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* main css */
 body {
     margin: 0;
@@ -296,7 +310,7 @@ main {
 .svg {
     display: flex;
     justify-content: center;
-    width: 100%; /* Ensures the SVG container takes full width */
+    width: 100%; 
 }
 
 .image-gallery {
@@ -363,8 +377,13 @@ footer {
     text-shadow: 0 0 10px rgba(0, 212, 255, 0.702);
 }
 
+.text p{
+    font-family: 'neuropol', sans-serif;
+    font-size: 1em;
+}
+
 .modal-content p {
-    font-family: 'A-Space Regular Demo', sans-serif;
+    font-family: 'neuropol', sans-serif;
     font-size: 1.5em;
     line-height: 1.6;
     margin-bottom: 20px;
