@@ -310,6 +310,7 @@ function createStarGroup(positions, name, id) {
     starGroups.push({ stars, line, name, starMaterial, lineMaterial, id });
 }
 
+// Zoom into star logic
 function smoothZoomTo(targetPosition, onComplete) {
     const zoomSpeed = 0.02; 
     const finalZoomDistance = 10; 
@@ -349,6 +350,7 @@ document.addEventListener('click', (event) => {
     }
 });
 
+// Load documentation upon zoom
 function loadDocumentationHTML(id) {
     const documentationElement = document.getElementById('documentation');
     menuIcon.style.display = 'none';
@@ -442,6 +444,7 @@ function createPlanet() {
     return planet;
 }
 
+// Function to create the orbiting planet 
 function createOrbitingPlanet() {
     const textureLoader = new THREE.TextureLoader();
     const orbitingPlanetTexture = textureLoader.load('static/planet.jpg'); 

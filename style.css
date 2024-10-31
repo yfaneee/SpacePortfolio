@@ -5,6 +5,7 @@
     font-style: normal;
 }
 
+/* main css */
 body {
     margin: 0;
     overflow: hidden;
@@ -396,6 +397,7 @@ footer {
     cursor: pointer;    
 }
 
+/* info box */
 .cube {
     width: 50px;
     height: 50px;
@@ -419,6 +421,7 @@ footer {
     border: 1px solid #333;
 }
 
+/* info box animation */
 .front  { transform: translateZ(25px); }
 .back   { transform: rotateY(180deg) translateZ(25px); }
 .left   { transform: rotateY(-90deg) translateZ(25px); }
@@ -531,7 +534,7 @@ footer {
 @media (max-width: 1566px) {
     #menu {
         top: 220px;
-        left: 440px;
+        left: 493px;
     }
 
     #menu a {
