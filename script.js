@@ -425,7 +425,7 @@ document.addEventListener('mousemove', (event) => {
 // Function to create the planet 
 function createPlanet() {
     const textureLoader = new THREE.TextureLoader();
-    const planetTexture = textureLoader.load('static/planettext.jpg'); 
+    const planetTexture = textureLoader.load('static/haira.jpg'); 
 
     const geometry = new THREE.SphereGeometry(20, 164, 164);
     const material = new THREE.MeshStandardMaterial({
@@ -447,7 +447,7 @@ function createPlanet() {
 // Function to create the orbiting planet 
 function createOrbitingPlanet() {
     const textureLoader = new THREE.TextureLoader();
-    const orbitingPlanetTexture = textureLoader.load('static/planet.jpg'); 
+    const orbitingPlanetTexture = textureLoader.load('static/hairb.jpg'); 
 
     const geometry = new THREE.SphereGeometry(5, 32, 32);
     const material = new THREE.MeshStandardMaterial({
