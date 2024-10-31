@@ -116,11 +116,60 @@ const outcomeTargets = {
     outcome5: new THREE.Vector3(310, 203, -60)
 };
 
+// Go to a specific constellation
+function moveAndZoomToConstellation(targetPosition, onComplete) {
+    const zoomOutTargetZ = 200;
+    const moveSpeed = 0.1; 
+    const zoomOutSpeed = 0.2;  
+    const positionThreshold = 5; 
 
+    let phase = "zoomOut";
+    let frameCounter = 0; 
+
+    function animate() {
+        const distanceToTarget = camera.position.distanceTo(targetPosition);
+
+        if (phase === "zoomOut") {
+            frameCounter++;
+            camera.position.z += (zoomOutTargetZ - camera.position.z) * zoomOutSpeed;
+
+            if (Math.abs(camera.position.z - zoomOutTargetZ) < 0.1 || frameCounter > 50) {
+                camera.position.z = zoomOutTargetZ; 
+                frameCounter = 0;
+                phase = "moveToTarget";
+                console.log("Completed Zoom Out. Moving to target.");
+            }
+
+        } else if (phase === "moveToTarget") {
+            frameCounter++;
+
+            camera.position.x += (targetPosition.x - camera.position.x) * moveSpeed;
+            camera.position.y += (targetPosition.y - camera.position.y) * moveSpeed;
+
+            if (Math.abs(camera.position.x - targetPosition.x) < positionThreshold &&
+                Math.abs(camera.position.y - targetPosition.y) < positionThreshold) {
+                camera.position.x = targetPosition.x;
+                camera.position.y = targetPosition.y;
+                console.log("Reached target position. Animation complete.");
+                if (onComplete) onComplete();
+                return;
+            }
+        }
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
+// Adding this to submenu items
 submenuItems.forEach((item) => {
     item.addEventListener('click', (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         closeMenu();
+        menuIcon.classList.remove('menu-open');
+
 
         const targetPosition = outcomeTargets[item.id];
         if (targetPosition) {
@@ -139,7 +188,7 @@ function createStarField() {
   const velocities = [];
   
   // Generate random star positions
-  for (let i = 0; i < 400000; i++) {
+  for (let i = 0; i < 100000; i++) {
     const x = THREE.MathUtils.randFloatSpread(5000);
     const y = THREE.MathUtils.randFloatSpread(5000);
     const z = THREE.MathUtils.randFloatSpread(5000);
@@ -373,21 +422,45 @@ document.addEventListener('mousemove', (event) => {
 
 // Function to create the planet 
 function createPlanet() {
+    const textureLoader = new THREE.TextureLoader();
+    const planetTexture = textureLoader.load('static/planettext.jpg'); 
+
     const geometry = new THREE.SphereGeometry(20, 164, 164);
-    const material = new THREE.MeshBasicMaterial({ color: 0x3b8bad });
+    const material = new THREE.MeshStandardMaterial({
+        map: planetTexture
+    });
+    
     const planet = new THREE.Mesh(geometry, material);
+
+    const light = new THREE.PointLight(0xffffff, 1);
+    light.position.set(50, 50, 50);
+    scene.add(light);
+
+    planet.position.set(0, 0, -30);
     scene.add(planet);
     
-    planet.position.set(0, 0, -30);
     return planet;
 }
 
 function createOrbitingPlanet() {
-    const geometry = new THREE.SphereGeometry(5, 32, 32); 
-    const material = new THREE.MeshBasicMaterial({ color: 0xaaaaaa }); 
+    const textureLoader = new THREE.TextureLoader();
+    const orbitingPlanetTexture = textureLoader.load('static/planet.jpg'); 
+
+    const geometry = new THREE.SphereGeometry(5, 32, 32);
+    const material = new THREE.MeshStandardMaterial({
+        map: orbitingPlanetTexture,
+        roughness: 1,    
+        metalness: 0     
+    });
+
     const orbitingPlanet = new THREE.Mesh(geometry, material);
+
+    const light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(10, 10, 10);
+    scene.add(light);
+
     scene.add(orbitingPlanet);
-    
+
     return orbitingPlanet;
 }
 
