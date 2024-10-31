@@ -182,49 +182,305 @@ submenuItems.forEach((item) => {
 
 // Create stars 
 function createStarField() {
-  const geometry = new THREE.BufferGeometry();
-  const vertices = [];
-  const colors = [];
-  const velocities = [];
-  
-  // Generate random star positions
-  for (let i = 0; i < 100000; i++) {
-    const x = THREE.MathUtils.randFloatSpread(5000);
-    const y = THREE.MathUtils.randFloatSpread(5000);
-    const z = THREE.MathUtils.randFloatSpread(5000);
+    const starGeometry = new THREE.BufferGeometry();
+    const starVertices = [];
+    const starColors = [];
+    const velocities = [];
+    
+    const numStars = 10000;
+    const galaxyRadius = 1500;
+    const zOffset = -800; 
 
-    vertices.push(x, y, z);
+    for (let i = 0; i < numStars; i++) {
+        const radius = Math.pow(Math.random(), 2) * galaxyRadius;
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos((Math.random() * 2) - 1);
 
-    velocities.push(
-        THREE.MathUtils.randFloat(-0.1, 0.1), 
-        THREE.MathUtils.randFloat(-0.1, 0.1), 
-        THREE.MathUtils.randFloat(-0.1, 0.1)  
-    );
+        const x = radius * Math.sin(phi) * Math.cos(theta);
+        const y = radius * Math.sin(phi) * Math.sin(theta);
+        const z = radius * Math.cos(phi) + zOffset; 
 
-    const color = new THREE.Color(Math.random(), Math.random(), Math.random());
-    colors.push(color.r, color.g, color.b);
-  }
+        starVertices.push(x, y, z);
 
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-  geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+        velocities.push(
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1)
+        );
 
-  // Basic star material with circle shape
-  const starMaterial = new THREE.PointsMaterial({
-    size: 2,  
-    vertexColors: true,  
-    sizeAttenuation: true,  
-    map: createCircleTexture(),  
-    transparent: true,
-    alphaTest: 0.5
-  });
+        const color = new THREE.Color();
+        if (radius < galaxyRadius * 0.3) {
+            color.setHSL(0.6, 0.7, 0.8);
+        } else if (radius < galaxyRadius * 0.6) {
+            color.setHSL(0.7, 0.5, 0.6); 
+        } else {
+            color.setHSL(0.0, 0.0, 0.8); 
+        }
 
-  const stars = new THREE.Points(geometry, starMaterial);
-  scene.add(stars);
-  return stars;
+        starColors.push(color.r, color.g, color.b);
+    }
+
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+    starGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+
+    const starMaterial = new THREE.PointsMaterial({
+        size: 1.5,  
+        vertexColors: true,  
+        sizeAttenuation: true,
+        map: createCircleTexture(),
+        transparent: true,
+        alphaTest: 0.5
+    });
+
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+    return stars;
 }
 
 let stars = createStarField();  
+
+function createStarFieldWithOffsets() {
+    const starGeometry = new THREE.BufferGeometry();
+    const starVertices = [];
+    const starColors = [];
+    const velocities = [];
+    
+    const numStars = 10000;
+    const galaxyRadius = 1500;
+    const xOffset = 500;  
+    const yOffset = -300; 
+
+    for (let i = 0; i < numStars; i++) {
+        const radius = Math.pow(Math.random(), 2) * galaxyRadius;
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos((Math.random() * 2) - 1);
+
+        const x = radius * Math.sin(phi) * Math.cos(theta) + xOffset; 
+        const y = radius * Math.sin(phi) * Math.sin(theta) + yOffset;
+        const z = radius * Math.cos(phi); 
+
+        starVertices.push(x, y, z);
+
+        velocities.push(
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1)
+        );
+
+        const color = new THREE.Color();
+        if (radius < galaxyRadius * 0.3) {
+            color.setHSL(0.6, 0.7, 0.8);
+        } else if (radius < galaxyRadius * 0.6) {
+            color.setHSL(0.7, 0.5, 0.6);
+        } else {
+            color.setHSL(0.0, 0.0, 0.8); 
+        }
+
+        starColors.push(color.r, color.g, color.b);
+    }
+
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+    starGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+
+    const starMaterial = new THREE.PointsMaterial({
+        size: 1.5,  
+        vertexColors: true,  
+        sizeAttenuation: true,
+        map: createCircleTexture(),
+        transparent: true,
+        alphaTest: 0.5
+    });
+
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+    return stars;
+}
+
+createStarFieldWithOffsets();
+
+function createStarFieldWithOffsetsSecond() {
+    const starGeometry = new THREE.BufferGeometry();
+    const starVertices = [];
+    const starColors = [];
+    const velocities = [];
+    
+    const numStars = 10000;
+    const galaxyRadius = 1500;
+    const xOffset = -300;  
+    const yOffset = 700; 
+
+    for (let i = 0; i < numStars; i++) {
+        const radius = Math.pow(Math.random(), 2) * galaxyRadius;
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos((Math.random() * 2) - 1);
+
+        const x = radius * Math.sin(phi) * Math.cos(theta) + xOffset; 
+        const y = radius * Math.sin(phi) * Math.sin(theta) + yOffset;
+        const z = radius * Math.cos(phi); 
+
+        starVertices.push(x, y, z);
+
+        velocities.push(
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1)
+        );
+
+        const color = new THREE.Color();
+        if (radius < galaxyRadius * 0.3) {
+            color.setHSL(0.6, 0.7, 0.8);
+        } else if (radius < galaxyRadius * 0.6) {
+            color.setHSL(0.7, 0.5, 0.6);
+        } else {
+            color.setHSL(0.0, 0.0, 0.8); 
+        }
+
+        starColors.push(color.r, color.g, color.b);
+    }
+
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+    starGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+
+    const starMaterial = new THREE.PointsMaterial({
+        size: 1.5,  
+        vertexColors: true,  
+        sizeAttenuation: true,
+        map: createCircleTexture(),
+        transparent: true,
+        alphaTest: 0.5
+    });
+
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+    return stars;
+}
+
+createStarFieldWithOffsetsSecond();
+
+function createStarFieldWithCustomOffsets() {
+    const starGeometry = new THREE.BufferGeometry();
+    const starVertices = [];
+    const starColors = [];
+    const velocities = [];
+    
+    const numStars = 10000;
+    const galaxyRadius = 1500;
+    const xOffset = -100;  
+    const yOffset = 100;
+    const zOffset = 300;
+
+    for (let i = 0; i < numStars; i++) {
+        const radius = Math.pow(Math.random(), 2) * galaxyRadius;
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos((Math.random() * 2) - 1);
+
+        const x = radius * Math.sin(phi) * Math.cos(theta) + xOffset; 
+        const y = radius * Math.sin(phi) * Math.sin(theta) + yOffset;
+        const z = radius * Math.cos(phi) + zOffset;
+
+        starVertices.push(x, y, z);
+
+        velocities.push(
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1)
+        );
+
+        const color = new THREE.Color();
+        if (radius < galaxyRadius * 0.3) {
+            color.setHSL(0.6, 0.7, 0.8);
+        } else if (radius < galaxyRadius * 0.6) {
+            color.setHSL(0.7, 0.5, 0.6);
+        } else {
+            color.setHSL(0.0, 0.0, 0.8); 
+        }
+
+        starColors.push(color.r, color.g, color.b);
+    }
+
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+    starGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+
+    const starMaterial = new THREE.PointsMaterial({
+        size: 1.5,  
+        vertexColors: true,  
+        sizeAttenuation: true,
+        map: createCircleTexture(),
+        transparent: true,
+        alphaTest: 0.5
+    });
+
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+    return stars;
+}
+
+createStarFieldWithCustomOffsets();
+
+function createStarFieldWithCustomOffsetsSecond() {
+    const starGeometry = new THREE.BufferGeometry();
+    const starVertices = [];
+    const starColors = [];
+    const velocities = [];
+    
+    const numStars = 10000;
+    const galaxyRadius = 1500;
+    const xOffset = 700;  
+    const yOffset = 600;
+    const zOffset = -400;
+
+    for (let i = 0; i < numStars; i++) {
+        const radius = Math.pow(Math.random(), 2) * galaxyRadius;
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos((Math.random() * 2) - 1);
+
+        const x = radius * Math.sin(phi) * Math.cos(theta) + xOffset; 
+        const y = radius * Math.sin(phi) * Math.sin(theta) + yOffset;
+        const z = radius * Math.cos(phi) + zOffset;
+
+        starVertices.push(x, y, z);
+
+        velocities.push(
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1), 
+            THREE.MathUtils.randFloat(-0.1, 0.1)
+        );
+
+        const color = new THREE.Color();
+        if (radius < galaxyRadius * 0.3) {
+            color.setHSL(0.6, 0.7, 0.8);
+        } else if (radius < galaxyRadius * 0.6) {
+            color.setHSL(0.7, 0.5, 0.6);
+        } else {
+            color.setHSL(0.0, 0.0, 0.8); 
+        }
+
+        starColors.push(color.r, color.g, color.b);
+    }
+
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+    starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+    starGeometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3));
+
+    const starMaterial = new THREE.PointsMaterial({
+        size: 1.5,  
+        vertexColors: true,  
+        sizeAttenuation: true,
+        map: createCircleTexture(),
+        transparent: true,
+        alphaTest: 0.5
+    });
+
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+    return stars;
+}
+
+createStarFieldWithCustomOffsetsSecond();
 
 // Function to create a circular texture 
 function createCircleTexture() {
@@ -425,7 +681,7 @@ document.addEventListener('mousemove', (event) => {
 // Function to create the planet 
 function createPlanet() {
     const textureLoader = new THREE.TextureLoader();
-    const planetTexture = textureLoader.load('static/haira.jpg'); 
+    const planetTexture = textureLoader.load('static/hairaa.jpg'); 
 
     const geometry = new THREE.SphereGeometry(20, 164, 164);
     const material = new THREE.MeshStandardMaterial({
@@ -446,7 +702,7 @@ function createPlanet() {
 
 function createBigPlanet() {
     const textureLoader = new THREE.TextureLoader();
-    const planetTexture = textureLoader.load('static/haira.jpg'); 
+    const planetTexture = textureLoader.load('static/BigPlan.jpg'); 
 
     const geometry = new THREE.SphereGeometry(50, 328, 328);
     const material = new THREE.MeshStandardMaterial({
@@ -455,10 +711,21 @@ function createBigPlanet() {
     
     const planet = new THREE.Mesh(geometry, material);
 
-
     planet.position.set(520, 420, -120);
     scene.add(planet);
-    
+
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.5); 
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1); 
+    directionalLight.position.set(100, 200, 300); 
+    directionalLight.castShadow = true;
+    directionalLight.shadow.mapSize.width = 2048;
+    directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 1000;
+    scene.add(directionalLight);
+
     return planet;
 }
 
@@ -488,7 +755,7 @@ function createOrbitingPlanet() {
 createStarField();
 const orbitingPlanet = createOrbitingPlanet();
 const planet = createPlanet();
-const bigplanet = createBigPlanet();
+const bigPlanet = createBigPlanet();
 createLearningOutcomesConstellations();
 createProjectsConstellations();
 camera.position.set(0, 0, 50);
