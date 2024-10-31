@@ -7,6 +7,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+const clock = new THREE.Clock();
 // Function to show/hide overlay and dropdown menu
 const menuIcon = document.getElementById('menu-icon');
 const overlay = document.getElementById('overlay');
@@ -711,7 +712,7 @@ function createBigPlanet() {
     
     const planet = new THREE.Mesh(geometry, material);
 
-    planet.position.set(520, 420, -120);
+    planet.position.set(720, -220, -340);
     scene.add(planet);
 
     const ambientLight = new THREE.AmbientLight(0x404040, 0.5); 
@@ -931,6 +932,87 @@ function animateOrbitingPlanet() {
     orbitingPlanet.position.set(planet.position.x + x, planet.position.y + y, planet.position.z + z);
 }
 
+function createBlackHole(x = 0, y = 0, z = 0) {
+    const blackHoleGroup = new THREE.Group();
+    blackHoleGroup.position.set(x, y, z);
+
+    const blackHoleGeometry = new THREE.SphereGeometry(10, 128, 128);
+    const blackHoleMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const blackHoleCore = new THREE.Mesh(blackHoleGeometry, blackHoleMaterial);
+    blackHoleGroup.add(blackHoleCore);
+
+    const accretionDiskGeometry = new THREE.RingGeometry(12, 20, 256);
+    const accretionDiskMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff4500,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.7,
+        blending: THREE.AdditiveBlending,
+    });
+    const accretionDisk = new THREE.Mesh(accretionDiskGeometry, accretionDiskMaterial);
+    accretionDisk.rotation.x = Math.PI / 2;  
+    blackHoleGroup.add(accretionDisk);
+
+    scene.add(blackHoleGroup);
+
+    function animateBlackHole() {
+        accretionDisk.rotation.z += 0.02;  
+        blackHoleCore.scale.x = 1 + Math.sin(Date.now() * 0.001) * 0.02;
+        blackHoleCore.scale.y = 1 + Math.sin(Date.now() * 0.001) * 0.02;
+    }
+
+    return animateBlackHole;
+}
+
+const animateBlackHole = createBlackHole(-300, 170, -500);
+
+function createStarCluster(xOffset = 0, yOffset = 0, zOffset = 0, clusterRadius = 100, numStars = 500) {
+    const clusterGeometry = new THREE.BufferGeometry();
+    const clusterVertices = [];
+    const clusterColors = [];
+    
+    for (let i = 0; i < numStars; i++) {
+        const radius = Math.random() * clusterRadius;
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos((Math.random() * 2) - 1);
+
+        const x = radius * Math.sin(phi) * Math.cos(theta) + xOffset;
+        const y = radius * Math.sin(phi) * Math.sin(theta) + yOffset;
+        const z = radius * Math.cos(phi) + zOffset;
+
+        clusterVertices.push(x, y, z);
+
+        const color = new THREE.Color();
+        if (radius < clusterRadius * 0.5) {
+            color.setHSL(0.75, 0.8, 0.7); 
+        } else {
+            color.setHSL(0.6, 0.7, 0.8);  
+        }
+        clusterColors.push(color.r, color.g, color.b);
+    }
+
+    clusterGeometry.setAttribute('position', new THREE.Float32BufferAttribute(clusterVertices, 3));
+    clusterGeometry.setAttribute('color', new THREE.Float32BufferAttribute(clusterColors, 3));
+
+    const clusterMaterial = new THREE.PointsMaterial({
+        size: 0.5,
+        vertexColors: true,
+        sizeAttenuation: true,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+    });
+
+    const starCluster = new THREE.Points(clusterGeometry, clusterMaterial);
+    scene.add(starCluster);
+    return starCluster;
+}
+
+createStarCluster(-400, -200, -300, 50, 700);
+createStarCluster(-300, -800, -500, 55, 700);
+createStarCluster(100, 600, -270, 70, 900);
+createStarCluster(-400, 300, -100, 60, 800);
+createStarCluster(500, 300, 100, 125, 1000);
+
 // Function for animations
 function animate() {
     requestAnimationFrame(animate);
@@ -999,6 +1081,7 @@ function animate() {
         }
     }
 
+    animateBlackHole();
     renderer.render(scene, camera);
     checkCameraMovement();
     checkMenuVisibility();
