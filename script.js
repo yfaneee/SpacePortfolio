@@ -1,11 +1,21 @@
-// Scene setup
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1;
+renderer.outputEncoding = THREE.sRGBEncoding;
+document.body.appendChild(renderer.domElement);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+camera.position.set(0, 0, 50);
+
+console.log('EXRLoader: ', THREE.EXRLoader); 
+
+const exrLoader = new THREE.EXRLoader();
+exrLoader.load('static/background.exr', (texture) => {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.background = texture;  
+});
 
 const clock = new THREE.Clock();
 // Function to show/hide overlay and dropdown menu
@@ -25,7 +35,7 @@ function toggleMenu() {
             dropdownMenu.style.transform = 'translateY(0)'; 
             overlay.style.opacity = '1';        
         }, 0);
-        menuIcon.classList.add('menu-open');
+        menuIcon.classList.add('menu-open'); 
     } else {
         dropdownMenu.style.opacity = '0';      
         dropdownMenu.style.transform = 'translateY(-20px)'; 
@@ -34,7 +44,7 @@ function toggleMenu() {
             dropdownMenu.style.display = 'none';
             overlay.style.display = 'none';
         }, 300); 
-        menuIcon.classList.remove('menu-open');
+        menuIcon.classList.remove('menu-open'); 
     }
 }
 
@@ -678,6 +688,17 @@ document.addEventListener('mousemove', (event) => {
         });
     }
 });
+
+const loadingOverlay = document.getElementById('loading-overlay');
+
+function hideLoadingOverlay() {
+    loadingOverlay.style.opacity = '0';
+    setTimeout(() => {
+        loadingOverlay.style.display = 'none';
+    }, 300); 
+}
+
+setTimeout(hideLoadingOverlay, 4000);
 
 // Function to create the planet 
 function createPlanet() {
