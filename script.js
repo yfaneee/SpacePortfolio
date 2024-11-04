@@ -698,7 +698,7 @@ function hideLoadingOverlay() {
     }, 300); 
 }
 
-setTimeout(hideLoadingOverlay, 4000);
+setTimeout(hideLoadingOverlay, 8000);
 
 // Function to create the planet 
 function createPlanet() {
