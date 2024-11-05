@@ -698,12 +698,12 @@ function hideLoadingOverlay() {
     }, 300); 
 }
 
-setTimeout(hideLoadingOverlay, 21000);
+setTimeout(hideLoadingOverlay, 8000);
 
 // Function to create the planet 
 function createPlanet() {
     const textureLoader = new THREE.TextureLoader();
-    const planetTexture = textureLoader.load('static/hairaa.jpg'); 
+    const planetTexture = textureLoader.load('static/background2.jpg'); 
 
     const geometry = new THREE.SphereGeometry(20, 164, 164);
     const material = new THREE.MeshStandardMaterial({
@@ -711,10 +711,6 @@ function createPlanet() {
     });
     
     const planet = new THREE.Mesh(geometry, material);
-
-    const light = new THREE.PointLight(0xffffff, 1);
-    light.position.set(50, 50, 50);
-    scene.add(light);
 
     planet.position.set(0, 0, -30);
     scene.add(planet);
