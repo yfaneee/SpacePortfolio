@@ -729,7 +729,7 @@ function createBigPlanet() {
     
     const planet = new THREE.Mesh(geometry, material);
 
-    planet.position.set(720, -220, -340);
+    planet.position.set(720, 820, -400);
     scene.add(planet);
 
     const ambientLight = new THREE.AmbientLight(0x404040, 0.5); 
