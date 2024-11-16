@@ -7,11 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
+    <header id="example1">
         <h1>Learning outcome 4 Professional standard</h1>
         <h2>Example 1: Conducting thorough research on visual aspects of the branding project.</h2>
     </header>
     <main>
+        <div class="example-navigation">
+            <button onclick="scrollToExample('example1')">Example 1</button>
+            <button onclick="scrollToExample('example2')">Example 2</button>
+        </div>
         <!-- Section 1-->
         <section class="content-section">
             <h2>Action</h2>
@@ -108,11 +112,15 @@
         <p>® Luca Tomescu</p>
     </footer>
 
-    <header>
+    <header id="example2">
         <h1>Learning outcome 4 Professional standard</h1>
         <h2>Example 2: Improving my planning skills, ensuring that I could manage tasks efficiently and achieve steady progress.</h2>
     </header>
     <main>
+        <div class="example-navigation">
+            <button onclick="scrollToExample('example1')">Example 1</button>
+            <button onclick="scrollToExample('example2')">Example 2</button>
+        </div>
         <!-- Section 1-->
         <section class="content-section">
             <h2>Action</h2>
@@ -191,10 +199,5 @@
         <p>® Luca Tomescu</p>
     </footer>
 
-    <div id="myModal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="img01">
-        <div id="caption"></div>
-    </div>
 </body>
 </html>

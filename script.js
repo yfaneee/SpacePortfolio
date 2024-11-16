@@ -94,6 +94,7 @@ const homeMenuItem = document.getElementById('home');
 const learningOutcomesMenuItem = document.getElementById('learning-outcomes');
 const submenuItems = document.querySelectorAll('.submenu li');
 const projectsMenuItem = document.getElementById('projects');
+const artworkMenuItem = document.getElementById('artwork');
 homeMenuItem.addEventListener('click', () => {
     closeMenu();
     moveCameraTo(cameraTargets.home); 
@@ -103,6 +104,12 @@ homeMenuItem.addEventListener('click', () => {
 learningOutcomesMenuItem.addEventListener('click', () => {
     closeMenu();
     moveCameraTo(cameraTargets.learningOutcomes);
+    menuIcon.classList.remove('menu-open');  
+});
+
+artworkMenuItem.addEventListener('click', () => {
+    closeMenu();
+    moveCameraTo(cameraTargets.artwork);
     menuIcon.classList.remove('menu-open');  
 });
 
@@ -530,11 +537,11 @@ const starGroups = [];
 // Create constellations for Learning Outcomes
 function createLearningOutcomesConstellations() {
     const constellations = [
-        { positions: [[190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning outcome 1: Interactive Media Products', id: 'learningOutcome1' },
+        { positions: [[238, 153, -57], [230, 188, -60], [190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning outcome 1: Interactive Media Products', id: 'learningOutcome1' },
         { positions: [[250, 219, -57], [263, 224, -59], [242, 231, -60]], name: 'Learning outcome 2: Development and Version control', id: 'learningOutcome2' },
-        { positions: [[270, 190, -59], [281, 181, -59], [252, 177, -56]], name: 'Learning outcome 3: Iterative design', id: 'learningOutcome3' },
-        { positions: [[290, 234, -58], [302, 242, -59], [277, 240, -57], [312, 251, -60]], name: 'Learning outcome 4: Professional standard', id: 'learningOutcome4' },
-        { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning outcome 5: Personal Leadership', id: 'learningOutcome5' }
+        { positions: [[270, 190, -59], [281, 181, -59], [302, 161, -59], [252, 177, -56]], name: 'Learning outcome 3: Iterative design', id: 'learningOutcome3' },
+        { positions: [[290, 234, -58], [302, 242, -59], [277, 240, -57], [332, 265, -60], [356, 244, -58]], name: 'Learning outcome 4: Professional standard', id: 'learningOutcome4' },
+        { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning outcome 5: Personal Leadership', id: 'learningOutcome5' },
     ];
 
     constellations.forEach(group => {
@@ -545,10 +552,24 @@ function createLearningOutcomesConstellations() {
 // Create constellations for Projects
 function createProjectsConstellations() {
     const constellations = [
-        { positions: [[-222, 225, -60], [-199, 217, -57], [-214, 210, -58]], name: 'Veneman en de Groot - Branding Project', id: 'project1' },
+        { positions: [[-382, 265, -60], [-199, 245, -57], [-214, 210, -58], [-185, 187, -58]], name: 'Veneman en de Groot - Branding Project', id: 'project1' },
         { positions: [[-250, 230, -60], [-263, 216, -58], [-275, 223, -60]], name: 'Project 2', id: 'project2' },
-        { positions: [[-286, 205, -59], [-310, 211, -60], [-300, 198, -55]], name: 'Project 3', id: 'project3' },
+        { positions: [[-286, 205, -59], [-310, 211, -60], [-300, 148, -55], [-260, 168, -55]], name: 'Project 3', id: 'project3' },
         { positions: [[-310, 239, -60], [-319, 245, -59], [-333, 230, -57]], name: 'Project 4', id: 'project4' }  
+    ];
+
+    constellations.forEach(group => {
+        createStarGroup(group.positions, group.name, group.id);
+    });
+}
+
+// Create constellations for Artwork
+function createArtworkConstellations() {
+    const constellations = [
+        { positions: [[ 22, 425, -60], [ 9, 417, -57], [ 14, 410, -58]], name: 'Artwork 1', id: 'artwork1' },
+        { positions: [[ 50, 430, -60], [ 63, 416, -58], [ 75, 401, -60]], name: 'Artwork 2', id: 'artwork1' },
+        { positions: [[ 96, 425, -59], [ -10, 481, -60], [ 10, 378, -55], [ 38, 399, -57], [ 55, 367, -59]], name: 'Artwork 3', id: 'artwork1' },
+        { positions: [[ 10, 439, -60], [ 19, 445, -59], [ 33, 430, -57]], name: 'Artwork 4', id: 'artwork1' }  
     ];
 
     constellations.forEach(group => {
@@ -565,12 +586,12 @@ function createStarGroup(positions, name, id) {
     });
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 4 });
+    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 7 });
     const stars = new THREE.Points(geometry, starMaterial);
 
     scene.add(stars);
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(positions.map(pos => new THREE.Vector3(...pos)));
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 1 });
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 3 });
     const line = new THREE.Line(lineGeometry, lineMaterial);
 
     scene.add(line);
@@ -626,12 +647,14 @@ function loadDocumentationHTML(id) {
         .then(response => response.text())
         .then(htmlContent => {
             documentationElement.innerHTML = `
-            <div style="display: flex; justify-content: flex-end; padding: 10px;">
-                <div class="close-icon" onclick="closeDocumentation()">X</div>
-            </div>
-            <div style="padding: 20px; margin: 10px;">
-                ${htmlContent}
-            </div>`;
+                <div class="documentation-wrapper">
+                    <div class="close-icon" onclick="closeDocumentation()">X</div>
+                    
+                    <div class="documentation-content">
+                        ${htmlContent}
+                    </div>
+
+                </div>`;
             documentationElement.style.display = 'block';
         })
         .catch(error => {
@@ -641,10 +664,18 @@ function loadDocumentationHTML(id) {
         });
 }
 
-function closeDocumentation() {
-    document.getElementById('documentation').style.display = 'none';
-    menuIcon.style.display = 'block';
+function scrollToExample(exampleId) {
+    const exampleElement = document.getElementById(exampleId);
 
+    if (exampleElement) {
+        exampleElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function closeDocumentation() {
+    const documentationElement = document.getElementById('documentation');
+    documentationElement.style.display = 'none';
+    menuIcon.style.display = 'block';
 }
 
 document.body.insertAdjacentHTML('beforeend', `
@@ -652,6 +683,17 @@ document.body.insertAdjacentHTML('beforeend', `
         <!-- Content will be loaded dynamically -->
     </div>
 `);
+
+document.addEventListener('click', (event) => {
+    const documentationElement = document.getElementById('documentation');
+    const documentationContent = document.querySelector('.documentation-wrapper');
+
+    if (documentationElement.style.display === 'block' && 
+        !documentationContent.contains(event.target) &&
+        !event.target.closest('.documentation-wrapper')) {
+        closeDocumentation();
+    }
+});
 
 // hover lo's/projects
 document.addEventListener('mousemove', (event) => {
@@ -776,6 +818,7 @@ const planet = createPlanet();
 const bigPlanet = createBigPlanet();
 createLearningOutcomesConstellations();
 createProjectsConstellations();
+createArtworkConstellations()
 camera.position.set(0, 0, 50);
 
 // Function for camera movement with W,A,S,D
@@ -896,16 +939,17 @@ function checkCameraMovement() {
 
 // Function for navigation through learning outcomes and projects
 const cameraZoomOutDistance = 200;
-const zoomInDistance = 50;  
+const zoomInDistance = 70;  
 const zoomDuration = 1000; 
 let isZoomingOut = false;
 let zoomPhaseCompleted = false; 
 
 const cameraTargets = {
-    projects: new THREE.Vector3(-280, 220, 50), 
-    learningOutcomes: new THREE.Vector3(266, 215, 50),
+    projects: new THREE.Vector3(-280, 220, 70), 
+    learningOutcomes: new THREE.Vector3(266, 215, 70),
+    artwork: new THREE.Vector3(33, 430, 70),
     home: new THREE.Vector3(0, 0, 50), 
-    initial: new THREE.Vector3(0, 0, 50) 
+    initial: new THREE.Vector3(0, 0, 70) 
 };
 
 let targetPosition = cameraTargets.initial;
@@ -920,6 +964,7 @@ function moveCameraTo(target) {
 
 const menuProjects = document.querySelector('#menu a[href="#projects"]');
 const menuLearningOutcomes = document.querySelector('#menu a[href="#learning-outcomes"]');
+const menuArtwork = document.querySelector('#menu a[href="#artwork"]');
 
 menuProjects.addEventListener('click', () => {
     moveCameraTo(cameraTargets.projects); 
@@ -928,6 +973,10 @@ menuProjects.addEventListener('click', () => {
 menuLearningOutcomes.addEventListener('click', () => {
     moveCameraTo(cameraTargets.learningOutcomes); 
 });
+
+menuArtwork.addEventListener('click', () => {
+    moveCameraTo(cameraTargets.artwork);
+})
 
 function isCameraNearTarget() {
     const distance = camera.position.distanceTo(targetPosition);
