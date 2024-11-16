@@ -685,4 +685,8 @@ code {
     #menu a {
         font-size: 20px;
     }  
+
+    .documentation-wrapper {
+        max-width: 80%;
+    }
 }
