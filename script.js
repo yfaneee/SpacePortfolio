@@ -537,11 +537,11 @@ const starGroups = [];
 // Create constellations for Learning Outcomes
 function createLearningOutcomesConstellations() {
     const constellations = [
-        { positions: [[238, 153, -57], [230, 188, -60], [190, 204, -60], [201, 211, -57], [210, 216, -58], [232, 223, -60]], name: 'Learning outcome 1: Interactive Media Products', id: 'learningOutcome1' },
-        { positions: [[250, 219, -57], [263, 224, -59], [242, 231, -60]], name: 'Learning outcome 2: Development and Version control', id: 'learningOutcome2' },
-        { positions: [[270, 190, -59], [281, 181, -59], [302, 161, -59], [252, 177, -56]], name: 'Learning outcome 3: Iterative design', id: 'learningOutcome3' },
-        { positions: [[290, 234, -58], [302, 242, -59], [277, 240, -57], [332, 265, -60], [356, 244, -58]], name: 'Learning outcome 4: Professional standard', id: 'learningOutcome4' },
-        { positions: [[310, 203, -60], [322, 231, -60], [326, 221, -56]], name: 'Learning outcome 5: Personal Leadership', id: 'learningOutcome5' },
+        { positions: [[238, 153, -57], [230, 188, -60], [180, 204, -60], [191, 211, -57], [200, 216, -58], [222, 223, -60]], name: 'Learning outcome 1: Interactive Media Products', id: 'learningOutcome1' },
+        { positions: [[270, 219, -57], [283, 224, -59], [262, 231, -60]], name: 'Learning outcome 2: Development and Version control', id: 'learningOutcome2' },
+        { positions: [[300, 180, -59], [311, 171, -59], [332, 151, -59], [282, 167, -56]], name: 'Learning outcome 3: Iterative design', id: 'learningOutcome3' },
+        { positions: [[310, 234, -58], [322, 242, -59], [297, 240, -57], [352, 265, -60], [376, 244, -58]], name: 'Learning outcome 4: Professional standard', id: 'learningOutcome4' },
+        { positions: [[350, 203, -60], [362, 231, -60], [366, 221, -56]], name: 'Learning outcome 5: Personal Leadership', id: 'learningOutcome5' },
     ];
 
     constellations.forEach(group => {
@@ -552,10 +552,10 @@ function createLearningOutcomesConstellations() {
 // Create constellations for Projects
 function createProjectsConstellations() {
     const constellations = [
-        { positions: [[-382, 265, -60], [-199, 245, -57], [-214, 210, -58], [-185, 187, -58]], name: 'Veneman en de Groot - Branding Project', id: 'project1' },
-        { positions: [[-250, 230, -60], [-263, 216, -58], [-275, 223, -60]], name: 'Project 2', id: 'project2' },
-        { positions: [[-286, 205, -59], [-310, 211, -60], [-300, 148, -55], [-260, 168, -55]], name: 'Project 3', id: 'project3' },
-        { positions: [[-310, 239, -60], [-319, 245, -59], [-333, 230, -57]], name: 'Project 4', id: 'project4' }  
+        { positions: [[-402, 275, -60], [-219, 255, -57], [-234, 220, -58], [-205, 197, -58]], name: 'Veneman en de Groot - Branding Project', id: 'project1' },
+        { positions: [[-270, 230, -60], [-283, 216, -58], [-295, 223, -60]], name: 'Project 2', id: 'project2' },
+        { positions: [[-316, 195, -59], [-340, 201, -60], [-330, 138, -55], [-290, 158, -55]], name: 'Project 3', id: 'project3' },
+        { positions: [[-330, 239, -60], [-329, 245, -59], [-353, 230, -57]], name: 'Project 4', id: 'project4' }  
     ];
 
     constellations.forEach(group => {
@@ -568,7 +568,7 @@ function createArtworkConstellations() {
     const constellations = [
         { positions: [[ 22, 425, -60], [ 9, 417, -57], [ 14, 410, -58]], name: 'Artwork 1', id: 'artwork1' },
         { positions: [[ 50, 430, -60], [ 63, 416, -58], [ 75, 401, -60]], name: 'Artwork 2', id: 'artwork1' },
-        { positions: [[ 96, 425, -59], [ -10, 481, -60], [ 10, 378, -55], [ 38, 399, -57], [ 55, 367, -59]], name: 'Artwork 3', id: 'artwork1' },
+        { positions: [[ 96, 435, -59], [ -30, 491, -60], [ 10, 378, -55], [ 38, 399, -57], [ 55, 367, -59]], name: 'Artwork 3', id: 'artwork1' },
         { positions: [[ 10, 439, -60], [ 19, 445, -59], [ 33, 430, -57]], name: 'Artwork 4', id: 'artwork1' }  
     ];
 
@@ -647,7 +647,7 @@ function loadDocumentationHTML(id) {
         .then(response => response.text())
         .then(htmlContent => {
             documentationElement.innerHTML = `
-                <div class="documentation-wrapper">
+                <div class="documentation-wrapper">wd
                     <div class="close-icon" onclick="closeDocumentation()">X</div>
                     
                     <div class="documentation-content">
