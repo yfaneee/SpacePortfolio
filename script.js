@@ -95,6 +95,7 @@ const learningOutcomesMenuItem = document.getElementById('learning-outcomes');
 const submenuItems = document.querySelectorAll('.submenu li');
 const projectsMenuItem = document.getElementById('projects');
 const artworkMenuItem = document.getElementById('artwork');
+const contactMenuItem = document.getElementById('contact');
 homeMenuItem.addEventListener('click', () => {
     closeMenu();
     moveCameraTo(cameraTargets.home); 
@@ -110,6 +111,12 @@ learningOutcomesMenuItem.addEventListener('click', () => {
 artworkMenuItem.addEventListener('click', () => {
     closeMenu();
     moveCameraTo(cameraTargets.artwork);
+    menuIcon.classList.remove('menu-open');  
+});
+
+contactMenuItem.addEventListener('click', () => {
+    closeMenu();
+    moveCameraTo(cameraTargets.contact);
     menuIcon.classList.remove('menu-open');  
 });
 
@@ -577,6 +584,17 @@ function createArtworkConstellations() {
     });
 }
 
+// Create constellation for Contact
+function createContactConstellation() {
+    const constellations = [
+        { positions: [[ 84, -325, -59], [ 46, -280, -59], [ -30, -361, -60], [ 10, -378, -55], [ 42, -425, -57], [ 55, -367, -59]], name: 'Contact', id: 'contact' }
+    ];
+
+    constellations.forEach(group => {
+        createStarGroup(group.positions, group.name, group.id);
+    });
+}
+
 // Create a group of stars
 function createStarGroup(positions, name, id) {
     const geometry = new THREE.BufferGeometry();
@@ -747,14 +765,14 @@ function createPlanet() {
     const textureLoader = new THREE.TextureLoader();
     const planetTexture = textureLoader.load('static/background2.jpg'); 
 
-    const geometry = new THREE.SphereGeometry(20, 164, 164);
+    const geometry = new THREE.SphereGeometry(60, 492, 492);
     const material = new THREE.MeshStandardMaterial({
         map: planetTexture
     });
     
     const planet = new THREE.Mesh(geometry, material);
 
-    planet.position.set(0, 0, -30);
+    planet.position.set(0, 0, -50);
     scene.add(planet);
     
     return planet;
@@ -771,7 +789,7 @@ function createBigPlanet() {
     
     const planet = new THREE.Mesh(geometry, material);
 
-    planet.position.set(720, 820, -400);
+    planet.position.set(720, 820, -200);
     scene.add(planet);
 
     const ambientLight = new THREE.AmbientLight(0x404040, 0.5); 
@@ -819,7 +837,8 @@ const bigPlanet = createBigPlanet();
 createLearningOutcomesConstellations();
 createProjectsConstellations();
 createArtworkConstellations()
-camera.position.set(0, 0, 50);
+createContactConstellation()
+camera.position.set(0, 0, 100);
 
 // Function for camera movement with W,A,S,D
 let isMoving = {
@@ -908,8 +927,8 @@ document.addEventListener('wheel', (e) => {
 });
 
 // Function to reset the camera 
-const initialCameraPosition = new THREE.Vector3(0, 0, 50);
-const initialCameraRotation = new THREE.Euler(0, 0, 0, 'XYZ');
+const initialCameraPosition = new THREE.Vector3(0, 0, 100);
+const initialCameraRotation = new THREE.Euler(0, 0, 760, 'XYZ');
 
 camera.position.copy(initialCameraPosition);
 camera.rotation.copy(initialCameraRotation);
@@ -939,17 +958,18 @@ function checkCameraMovement() {
 
 // Function for navigation through learning outcomes and projects
 const cameraZoomOutDistance = 200;
-const zoomInDistance = 70;  
+const zoomInDistance = 200;  
 const zoomDuration = 1000; 
 let isZoomingOut = false;
 let zoomPhaseCompleted = false; 
 
 const cameraTargets = {
-    projects: new THREE.Vector3(-280, 220, 70), 
-    learningOutcomes: new THREE.Vector3(266, 215, 70),
-    artwork: new THREE.Vector3(33, 430, 70),
-    home: new THREE.Vector3(0, 0, 50), 
-    initial: new THREE.Vector3(0, 0, 70) 
+    projects: new THREE.Vector3(-280, 205, 200), 
+    learningOutcomes: new THREE.Vector3(280, 210, 200),
+    artwork: new THREE.Vector3(33, 430, 200),
+    contact: new THREE.Vector3(42, -345, 200),
+    home: new THREE.Vector3(0, 0, 200), 
+    initial: new THREE.Vector3(0, 0, 200) 
 };
 
 let targetPosition = cameraTargets.initial;
@@ -965,6 +985,7 @@ function moveCameraTo(target) {
 const menuProjects = document.querySelector('#menu a[href="#projects"]');
 const menuLearningOutcomes = document.querySelector('#menu a[href="#learning-outcomes"]');
 const menuArtwork = document.querySelector('#menu a[href="#artwork"]');
+const menuContact = document.querySelector('#menu a[href="#contact"]');
 
 menuProjects.addEventListener('click', () => {
     moveCameraTo(cameraTargets.projects); 
@@ -974,9 +995,13 @@ menuLearningOutcomes.addEventListener('click', () => {
     moveCameraTo(cameraTargets.learningOutcomes); 
 });
 
+menuContact.addEventListener('click', () => {
+    moveCameraTo(cameraTargets.contact); 
+});
+
 menuArtwork.addEventListener('click', () => {
     moveCameraTo(cameraTargets.artwork);
-})
+});
 
 function isCameraNearTarget() {
     const distance = camera.position.distanceTo(targetPosition);
@@ -995,7 +1020,7 @@ function animateOrbitingPlanet() {
     const y = orbitRadius * Math.sin(orbitTime * 0.5);  
     const z = orbitRadius * Math.cos(orbitTime);
 
-    orbitingPlanet.position.set(planet.position.x + x, planet.position.y + y, planet.position.z + z);
+    orbitingPlanet.position.set(planet.position.x + x*2, planet.position.y + y*2, planet.position.z + z*2);
 }
 
 function createBlackHole(x = 0, y = 0, z = 0) {
@@ -1079,6 +1104,16 @@ createStarCluster(100, 600, -270, 70, 900);
 createStarCluster(-400, 300, -100, 60, 800);
 createStarCluster(500, 300, 100, 125, 1000);
 
+const restrictedZoneRadius = 80; 
+function restrictCameraMovement(planet) {
+    const cameraDistance = camera.position.distanceTo(planet.position);
+
+    if (cameraDistance < restrictedZoneRadius) {
+        // Move the camera back to the edge of the restricted zone
+        const direction = camera.position.clone().sub(planet.position).normalize();
+        camera.position.copy(planet.position.clone().add(direction.multiplyScalar(restrictedZoneRadius)));
+    }
+}
 // Function for animations
 function animate() {
     requestAnimationFrame(animate);
@@ -1148,20 +1183,31 @@ function animate() {
     }
 
     animateBlackHole();
+    restrictCameraMovement(planet);
     renderer.render(scene, camera);
     checkCameraMovement();
     checkMenuVisibility();
 }
 
-// Function for menu on planet zoom
+let menuVisible = false; 
+
 function checkMenuVisibility() {
     const menu = document.getElementById('menu');
     const distance = camera.position.distanceTo(planet.position);
 
-    if (distance < 35.5) {
-        menu.style.display = 'flex';
+    const minDistance = 80; 
+    const maxDistance = 120; 
+
+    if (distance >= minDistance && distance <= maxDistance) {
+        if (!menuVisible) { 
+            menu.style.display = 'flex';
+            menuVisible = true;
+        }
     } else {
-        menu.style.display = 'none';
+        if (menuVisible) { 
+            menu.style.display = 'none';
+            menuVisible = false;
+        }
     }
 }
 
