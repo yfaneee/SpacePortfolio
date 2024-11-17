@@ -135,10 +135,10 @@ document.addEventListener('click', (event) => {
 
 const outcomeTargets = {
     outcome1: new THREE.Vector3(190, 204, -60),
-    outcome2: new THREE.Vector3(250, 219, -57),
-    outcome3: new THREE.Vector3(270, 190, -59),
-    outcome4: new THREE.Vector3(290, 234, -58),
-    outcome5: new THREE.Vector3(310, 203, -60)
+    outcome2: new THREE.Vector3(258, 224, -57),
+    outcome3: new THREE.Vector3(310, 175, -59),
+    outcome4: new THREE.Vector3(300, 243, -58),
+    outcome5: new THREE.Vector3(355, 223, -60)
 };
 
 // Go to a specific constellation
