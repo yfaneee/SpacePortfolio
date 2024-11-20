@@ -52,7 +52,7 @@ body {
 .documentation-wrapper {
     position: relative;
     margin: 50px auto;
-    max-width: 70%;
+    max-width: 60%;
     background-color: transparent;
     border-radius: 8px;
     padding: 20px;
@@ -69,7 +69,7 @@ body {
     font-family: 'A-Space Regular Demo', sans-serif;
     font-size: 1.3em;
     padding: 8px 16px;
-    background-color: #4e59ff;
+    background-color: #1a73e8;
     color: white;
     border: none;
     border-radius: 4px;
@@ -159,8 +159,8 @@ canvas {
 
 #menu-icon {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 40px;
+    left: 30px;
     cursor: pointer;
     z-index: 1000;
 }
@@ -298,12 +298,12 @@ canvas {
 header {
     font-family: 'A-Space Regular Demo', sans-serif;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 header h1 {
-    font-size: 2.9em;
-    color: #4e59ff;
+    font-size: 2.4em;
+    color: #1a73e8;
 }
 
 header h2 {
@@ -357,6 +357,8 @@ main {
     border-bottom: 2px solid #4e59ff;
     padding-bottom: 5px;
     margin-bottom: 15px;
+    margin-left: 80px;
+    margin-right: 80px;
 }
 
 /* Layout for Text and SVG */
@@ -401,7 +403,8 @@ footer {
     text-align: center;
     color: #777;
     font-size: 0.9em;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-bottom: 50px;
 }
 
 /* Modal overlay styling */
@@ -449,7 +452,7 @@ footer {
 
 .text p{
     font-family: '', sans-serif;
-    font-size: 1.1em;
+    font-size: 0.9em;
 }
 
 pre {
@@ -497,6 +500,7 @@ code {
 }
 
 #info-button {
+    margin: 20px;
     position: fixed;
     bottom: 13.33px; 
     left: 13.33px;   
@@ -520,7 +524,7 @@ code {
     position: absolute;
     width: 33.33px;    
     height: 33.33px;   
-    background-color: #4E59FF;
+    background-color: #1a73e8;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -576,10 +580,14 @@ code {
 }
 
 .spaced-text {
+    text-align: justify;
+    max-width: 70ch;
+    margin: 0 auto;
     line-height: 1.5;
     letter-spacing: 1px;
     word-spacing: 5px;
     margin-bottom: 20px;
+    word-wrap: break-word;
 }
 
 /* Info Dropdown */

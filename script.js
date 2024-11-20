@@ -599,8 +599,18 @@ function createContactConstellation() {
 function createStarGroup(positions, name, id) {
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
+    const hitboxes = [];
+
     positions.forEach(pos => {
         vertices.push(...pos);
+        const hitboxGeometry = new THREE.SphereGeometry(10, 16, 16); 
+        const hitboxMaterial = new THREE.MeshBasicMaterial({
+            visible: false, 
+        });
+        const hitbox = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
+        hitbox.position.set(...pos);
+        scene.add(hitbox);
+        hitboxes.push(hitbox);
     });
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
@@ -613,7 +623,7 @@ function createStarGroup(positions, name, id) {
     const line = new THREE.Line(lineGeometry, lineMaterial);
 
     scene.add(line);
-    starGroups.push({ stars, line, name, starMaterial, lineMaterial, id });
+    starGroups.push({ stars, line, name, starMaterial, lineMaterial, id, hitboxes });
 }
 
 // Zoom into star logic
@@ -628,6 +638,7 @@ function smoothZoomTo(targetPosition, onComplete) {
 
         camera.position.z -= zoomSpeed * 301;
         camera.rotation.z += 0.001;
+
         if (distanceToTarget < finalZoomDistance || camera.position.z <= targetPosition.z) {
             camera.position.copy(targetPosition); 
             if (onComplete) onComplete(); 
@@ -646,13 +657,19 @@ document.addEventListener('click', (event) => {
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(starGroups.map(group => group.stars));
+
+    const intersects = raycaster.intersectObjects(starGroups.flatMap(group => group.hitboxes));
 
     if (intersects.length > 0) {
-        const clickedGroup = starGroups.find(group => group.stars === intersects[0].object);
-        const targetPosition = intersects[0].point;
+        const clickedGroup = starGroups.find(group => 
+            group.hitboxes.includes(intersects[0].object)
+        );
 
-        smoothZoomTo(targetPosition, () => loadDocumentationHTML(clickedGroup.id));
+        if (clickedGroup) {
+            const targetPosition = intersects[0].point;
+
+            smoothZoomTo(targetPosition, () => loadDocumentationHTML(clickedGroup.id));
+        }
     }
 });
 
@@ -665,7 +682,7 @@ function loadDocumentationHTML(id) {
         .then(response => response.text())
         .then(htmlContent => {
             documentationElement.innerHTML = `
-                <div class="documentation-wrapper">wd
+                <div class="documentation-wrapper">
                     <div class="close-icon" onclick="closeDocumentation()">X</div>
                     
                     <div class="documentation-content">
@@ -719,14 +736,14 @@ document.addEventListener('mousemove', (event) => {
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-    const objectsToCheck = starGroups.flatMap(group => [group.stars, group.line]);
+    const objectsToCheck = starGroups.flatMap(group => group.hitboxes);
     const intersects = raycaster.intersectObjects(objectsToCheck);
 
     if (intersects.length > 0) {
         const firstIntersectedObject = intersects[0].object;
         
-        const hoveredGroup = starGroups.find(group => 
-            group.stars === firstIntersectedObject || group.line === firstIntersectedObject
+        const hoveredGroup = starGroups.find(group =>
+            group.hitboxes.includes(firstIntersectedObject)
         );
     
         if (hoveredGroup) {
@@ -736,17 +753,21 @@ document.addEventListener('mousemove', (event) => {
             tooltip.style.left = `${event.clientX + 10}px`;
             tooltip.style.top = `${event.clientY + 10}px`;
 
-            hoveredGroup.stars.material.color.set(0x660033);  
-            hoveredGroup.line.material.color.set(0x272757);  
-        }
-    } else {
-        tooltip.style.display = 'none';
+            hoveredGroup.stars.material.color.set(0x1a73e8);  
+            hoveredGroup.line.material.color.set(0xe88f1a);  
 
-        starGroups.forEach(group => {
-            group.stars.material.color.set(0xffffff);  
-            group.line.material.color.set(0xffffff);  
-        });
-    }
+            document.body.style.cursor = 'pointer';
+            return;
+        }
+    } 
+
+    tooltip.style.display = 'none';
+    document.body.style.cursor = 'default'; 
+
+    starGroups.forEach(group => {
+        group.stars.material.color.set(0xffffff);  
+        group.line.material.color.set(0xffffff);  
+    });
 });
 
 const loadingOverlay = document.getElementById('loading-overlay');
