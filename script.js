@@ -195,11 +195,12 @@ submenuItems.forEach((item) => {
         closeMenu();
         menuIcon.classList.remove('menu-open');
 
-
         const targetPosition = outcomeTargets[item.id];
         if (targetPosition) {
-            moveAndZoomToConstellation(targetPosition, () => {
-                console.log(`Reached ${item.id}`);
+            smoothZoomTo(targetPosition, () => {
+                const documentId = item.id.replace('outcome', 'learningoutcome');
+                console.log(`Smoothly zoomed to ${documentId}`);
+                loadDocumentationHTML(documentId);
             });
         }
     });
@@ -628,21 +629,27 @@ function createStarGroup(positions, name, id) {
 
 // Zoom into star logic
 function smoothZoomTo(targetPosition, onComplete) {
-    const zoomSpeed = 0.02; 
-    const finalZoomDistance = 10; 
+    const zoomSpeed = 0.02;
+    const finalZoomDistance = 10;
+    const startPosition = camera.position.clone();
+    const startRotation = camera.rotation.z;
+    let progress = 0;
 
     function animateZoom() {
-        const distanceToTarget = camera.position.distanceTo(targetPosition);
+        progress += zoomSpeed;
         
-        camera.position.lerp(targetPosition, zoomSpeed);
+        progress = Math.min(1, progress);
+        
+        camera.position.lerpVectors(startPosition, targetPosition, progress);
+        
+        const zOffset = (1 - progress) * 301;
+        camera.position.z -= zoomSpeed * zOffset;
+        
+        camera.rotation.z = startRotation + (progress * Math.PI * 0.1);
 
-        camera.position.z -= zoomSpeed * 301;
-        camera.rotation.z += 0.001;
-
-        if (distanceToTarget < finalZoomDistance || camera.position.z <= targetPosition.z) {
-            camera.position.copy(targetPosition); 
-            if (onComplete) onComplete(); 
-            
+        if (progress >= 1) {
+            camera.position.copy(targetPosition);
+            if (onComplete) onComplete();
         } else {
             renderer.render(scene, camera);
             requestAnimationFrame(animateZoom);
@@ -652,31 +659,15 @@ function smoothZoomTo(targetPosition, onComplete) {
     animateZoom();
 }
 
-document.addEventListener('click', (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+// Add this variable at the top level of your script
+let documentationOpen = false;
 
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(starGroups.flatMap(group => group.hitboxes));
-
-    if (intersects.length > 0) {
-        const clickedGroup = starGroups.find(group => 
-            group.hitboxes.includes(intersects[0].object)
-        );
-
-        if (clickedGroup) {
-            const targetPosition = intersects[0].point;
-
-            smoothZoomTo(targetPosition, () => loadDocumentationHTML(clickedGroup.id));
-        }
-    }
-});
-
-// Load documentation upon zoom
 function loadDocumentationHTML(id) {
     const documentationElement = document.getElementById('documentation');
     menuIcon.style.display = 'none';
+    documentationOpen = true;
+
+    documentationElement.scrollTop = 0;
 
     fetch(`docs/${id}.html`)
         .then(response => response.text())
@@ -684,13 +675,13 @@ function loadDocumentationHTML(id) {
             documentationElement.innerHTML = `
                 <div class="documentation-wrapper">
                     <div class="close-icon" onclick="closeDocumentation()">X</div>
-                    
                     <div class="documentation-content">
                         ${htmlContent}
                     </div>
-
                 </div>`;
             documentationElement.style.display = 'block';
+            
+            documentationElement.scrollTop = 0;
         })
         .catch(error => {
             console.error('Error loading documentation:', error);
@@ -699,18 +690,103 @@ function loadDocumentationHTML(id) {
         });
 }
 
+function closeDocumentation() {
+    const documentationElement = document.getElementById('documentation');
+    documentationElement.style.display = 'none';
+    menuIcon.style.display = 'block';
+    documentationOpen = false;
+    
+    documentationElement.scrollTop = 0;
+}
+
+
+// For camera dragging
+document.addEventListener('mousedown', (e) => {
+    if (!documentationOpen) {
+        isDragging = true;
+    }
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!documentationOpen && isDragging) {
+        const deltaX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+        const deltaY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+
+        targetRotationY -= deltaX * rotationSpeed;
+        targetRotationX -= deltaY * rotationSpeed;
+
+        targetRotationX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, targetRotationX));
+    }
+});
+
+// For WASD movement
+document.addEventListener('keydown', (e) => {
+    if (!documentationOpen) {
+        switch (e.key) {
+            case 'w':
+                isMoving.up = true;
+                break;
+            case 's':
+                isMoving.down = true;
+                break;
+            case 'a':
+                isMoving.left = true;
+                break;
+            case 'd':
+                isMoving.right = true;
+                break;
+        }
+    }
+});
+
+// For star clicking/raycasting
+document.addEventListener('click', (event) => {
+    const documentationElement = document.getElementById('documentation');
+    const documentationContent = document.querySelector('.documentation-wrapper');
+
+    if (documentationElement.style.display === 'block') {
+        if (!documentationContent.contains(event.target)) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        return;
+    }
+
+    // Only process star clicks if documentation is not open
+    if (!documentationOpen) {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(starGroups.flatMap(group => group.hitboxes));
+
+        if (intersects.length > 0) {
+            const clickedGroup = starGroups.find(group => 
+                group.hitboxes.includes(intersects[0].object)
+            );
+
+            if (clickedGroup) {
+                const targetPosition = intersects[0].point;
+                smoothZoomTo(targetPosition, () => loadDocumentationHTML(clickedGroup.id));
+            }
+        }
+    }
+});
+
+// For wheel/zoom
+document.addEventListener('wheel', (e) => {
+    if (!documentationOpen) {
+        targetZoom += e.deltaY * scrollSpeed;
+        targetZoom = Math.max(5, Math.min(targetZoom, 150));
+    }
+}, { passive: false });
+
 function scrollToExample(exampleId) {
     const exampleElement = document.getElementById(exampleId);
 
     if (exampleElement) {
         exampleElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-}
-
-function closeDocumentation() {
-    const documentationElement = document.getElementById('documentation');
-    documentationElement.style.display = 'none';
-    menuIcon.style.display = 'block';
 }
 
 document.body.insertAdjacentHTML('beforeend', `
@@ -1138,76 +1214,71 @@ function restrictCameraMovement(planet) {
 // Function for animations
 function animate() {
     requestAnimationFrame(animate);
-    animateOrbitingPlanet();
+    
+    if (!documentationOpen) {
+        animateOrbitingPlanet();
 
-    const positions = stars.geometry.attributes.position.array;
-    const velocities = stars.geometry.attributes.velocity.array;
+        const positions = stars.geometry.attributes.position.array;
+        const velocities = stars.geometry.attributes.velocity.array;
 
-    for (let i = 0; i < positions.length; i += 3) {
-        positions[i] += velocities[i];    
-        positions[i + 1] += velocities[i + 1]; 
-        positions[i + 2] += velocities[i + 2]; 
+        for (let i = 0; i < positions.length; i += 3) {
+            positions[i] += velocities[i];    
+            positions[i + 1] += velocities[i + 1]; 
+            positions[i + 2] += velocities[i + 2]; 
 
-        if (positions[i] > 2500) positions[i] = -2500;
-        if (positions[i + 1] > 2500) positions[i + 1] = -2500;
-        if (positions[i + 2] > 2500) positions[i + 2] = -2500;
+            if (positions[i] > 2500) positions[i] = -2500;
+            if (positions[i + 1] > 2500) positions[i + 1] = -2500;
+            if (positions[i + 2] > 2500) positions[i + 2] = -2500;
 
-        if (positions[i] < -2500) positions[i] = 2500;
-        if (positions[i + 1] < -2500) positions[i + 1] = 2500;
-        if (positions[i + 2] < -2500) positions[i + 2] = 2500;
+            if (positions[i] < -2500) positions[i] = 2500;
+            if (positions[i + 1] < -2500) positions[i + 1] = 2500;
+            if (positions[i + 2] < -2500) positions[i + 2] = 2500;
+        }
+
+        stars.geometry.attributes.position.needsUpdate = true; 
+
+        // Condition for navigation with zooming in and out
+        if (isZoomingOut && !zoomPhaseCompleted) {
+            camera.position.z += (cameraZoomOutDistance - camera.position.z) * 0.07; 
+            if (Math.abs(camera.position.z - cameraZoomOutDistance) < 0.1) {
+                isZoomingOut = false;
+                zoomPhaseCompleted = true;
+                isMovingToTarget = true;
+            }
+        }
+
+        if (isMovingToTarget && zoomPhaseCompleted) {
+            camera.position.lerp(targetPosition, 0.1);  
+
+            if (camera.position.distanceTo(targetPosition) < 20) {
+                const zoomInFactor = 0.1;
+                camera.position.z += (zoomInDistance - camera.position.z) * zoomInFactor;
+            }
+
+            if (isCameraNearTarget()) {
+                isMovingToTarget = false;  
+                zoomPhaseCompleted = false;
+            }
+        }
+
+        if (!isMovingToTarget && !isZoomingOut) {
+            const zoomLerpFactor = 0.1; 
+            camera.position.z += (targetZoom - camera.position.z) * zoomLerpFactor;
+            camera.rotation.x += (targetRotationX - camera.rotation.x) * smoothFactor;
+            camera.rotation.y += (targetRotationY - camera.rotation.y) * smoothFactor;
+
+            if (isMoving.up) camera.position.y += moveSpeed;
+            if (isMoving.down) camera.position.y -= moveSpeed;
+            if (isMoving.left) camera.position.x -= moveSpeed;
+            if (isMoving.right) camera.position.x += moveSpeed;
+        }
+
+        animateBlackHole();
+        restrictCameraMovement(planet);
+        renderer.render(scene, camera);
+        checkCameraMovement();
+        checkMenuVisibility();
     }
-
-    stars.geometry.attributes.position.needsUpdate = true; 
-
-    // Condition for navigation with zooming in and out
-    if (isZoomingOut && !zoomPhaseCompleted) {
-        camera.position.z += (cameraZoomOutDistance - camera.position.z) * 0.07; 
-        if (Math.abs(camera.position.z - cameraZoomOutDistance) < 0.1) {
-            isZoomingOut = false;
-            zoomPhaseCompleted = true;
-            isMovingToTarget = true;
-        }
-    }
-
-    if (isMovingToTarget && zoomPhaseCompleted) {
-        camera.position.lerp(targetPosition, 0.1);  
-
-        if (camera.position.distanceTo(targetPosition) < 20) {
-            const zoomInFactor = 0.1;
-            camera.position.z += (zoomInDistance - camera.position.z) * zoomInFactor;
-        }
-
-        if (isCameraNearTarget()) {
-            isMovingToTarget = false;  
-            zoomPhaseCompleted = false;
-        }
-    }
-
-    if (!isMovingToTarget && !isZoomingOut) {
-        const zoomLerpFactor = 0.1; 
-        camera.position.z += (targetZoom - camera.position.z) * zoomLerpFactor;
-        camera.rotation.x += (targetRotationX - camera.rotation.x) * smoothFactor;
-        camera.rotation.y += (targetRotationY - camera.rotation.y) * smoothFactor;
-
-        if (isMoving.up) {
-            camera.position.y += moveSpeed;
-        }
-        if (isMoving.down) {
-            camera.position.y -= moveSpeed;
-        }
-        if (isMoving.left) {
-            camera.position.x -= moveSpeed;
-        }
-        if (isMoving.right) {
-            camera.position.x += moveSpeed;
-        }
-    }
-
-    animateBlackHole();
-    restrictCameraMovement(planet);
-    renderer.render(scene, camera);
-    checkCameraMovement();
-    checkMenuVisibility();
 }
 
 let menuVisible = false; 
