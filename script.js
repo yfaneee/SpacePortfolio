@@ -702,6 +702,30 @@ function closeDocumentation() {
     menuIcon.style.display = 'block';
     documentationOpen = false;
     
+    const startRotation = camera.rotation.z;
+    // Normalize the rotation to prevent multiple spins
+    const normalizedRotation = startRotation % (Math.PI * 2);
+    let progress = 0;
+    
+    function resetRotation() {
+        progress += 0.02; 
+        progress = Math.min(1, progress);
+        
+        // Ensure smooth rotation back to 0
+        camera.rotation.z = normalizedRotation * (1 - progress);
+        
+        if (progress < 1 && Math.abs(camera.rotation.z) > 0.01) {
+            requestAnimationFrame(resetRotation);
+        } else {
+            camera.rotation.z = 0; // Ensure it ends at exactly 0
+        }
+    }
+    
+    // Only reset rotation if it's significantly different from 0
+    if (Math.abs(normalizedRotation) > 0.01) {
+        resetRotation();
+    }
+    
     documentationElement.scrollTop = 0;
 }
 
