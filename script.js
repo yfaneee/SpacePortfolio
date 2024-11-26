@@ -826,8 +826,8 @@ document.addEventListener('mousemove', (event) => {
             console.log(`Hovered over: ${hoveredGroup.name}`); 
             tooltip.innerText = hoveredGroup.name;
             tooltip.style.display = 'block';  
-            tooltip.style.left = `${event.clientX + 10}px`;
-            tooltip.style.top = `${event.clientY + 10}px`;
+            tooltip.style.left = `${event.clientX + 7}px`;
+            tooltip.style.top = `${event.clientY + 7}px`;
 
             hoveredGroup.stars.material.color.set(0x1a73e8);  
             hoveredGroup.line.material.color.set(0xe88f1a);  
