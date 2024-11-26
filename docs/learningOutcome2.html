@@ -184,7 +184,7 @@
                 });
                             </code></pre>
             <div class="image-gallery">
-                <img src="static/LO2b.png" alt="Wireframe Example 2">
+                <img src="static/LO2b.png" alt="Wireframe Example 2" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -197,7 +197,7 @@
                 </div>           
             </div>
             <div class="image-gallery">
-                <img src="static/LO2c.png" alt="Wireframe Example 1">
+                <img src="static/LO2c.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -210,8 +210,8 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/LO2d.png" alt="Wireframe Example 1">
-                <img src="static/LO2e.png" alt="Wireframe Example 2">
+                <img src="static/LO2d.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                <img src="static/LO2e.png" alt="Wireframe Example 2" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -321,7 +321,7 @@ document.addEventListener('click', (event) => {
         <section class="content-section">
             <h2>Result</h2>
             <div class="image-gallery">
-                <img src="static/LO2bor.gif" alt="Wireframe Example 1">
+                <img src="static/LO2bor.gif" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
             <div class="content">
                 <div class="text">
@@ -353,8 +353,8 @@ document.addEventListener('click', (event) => {
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/LO2xc.png" alt="Wireframe Example 1">
-                <img src="static/LO2xx.png" alt="Wireframe Example 2">
+                <img src="static/LO2xc.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                <img src="static/LO2xx.png" alt="Wireframe Example 2" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -392,5 +392,15 @@ document.addEventListener('click', (event) => {
             </div>
         </section>
     </main>
+
+    <footer>
+        <p>® Luca Tomescu</p>
+    </footer>
+
+    <div id="imageModal" class="image-modal">
+        <span class="close-icon">&times;</span>
+        <img class="image-modal-content" id="modalImage">
+    </div>
+    
 </body>
 </html>

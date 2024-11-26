@@ -144,9 +144,10 @@ const outcomeTargets = {
 // Go to a specific constellation
 function moveAndZoomToConstellation(targetPosition, onComplete) {
     const zoomOutTargetZ = 200;
-    const moveSpeed = 0.1; 
-    const zoomOutSpeed = 0.2;  
-    const positionThreshold = 5; 
+    const moveSpeed = 0.02; 
+    const zoomOutSpeed = 0.05;  
+    const positionThreshold = 5;
+    const documentationDelay = 2000;
 
     let phase = "zoomOut";
     let frameCounter = 0; 
@@ -176,7 +177,12 @@ function moveAndZoomToConstellation(targetPosition, onComplete) {
                 camera.position.x = targetPosition.x;
                 camera.position.y = targetPosition.y;
                 console.log("Reached target position. Animation complete.");
-                if (onComplete) onComplete();
+                
+                if (onComplete) {
+                    setTimeout(() => {
+                        onComplete();
+                    }, documentationDelay);
+                }
                 return;
             }
         }
@@ -942,10 +948,12 @@ let isMoving = {
     up: false,
     down: false,
     left: false,
-    right: false
+    right: false,
+    sprint: false  
 };
 
 const moveSpeed = 0.7;
+const sprintMultiplier = 3;  
 const zoomSpeed = 0.05;
 
 // Smoothing factors for rotation
@@ -955,9 +963,9 @@ const smoothFactor = 0.1;
 let targetRotationX = camera.rotation.x;
 let targetRotationY = camera.rotation.y;
 
-// WASD input
+// Update WASD and Shift input
 document.addEventListener('keydown', (e) => {
-    switch (e.key) {
+    switch (e.key.toLowerCase()) {  
         case 'w':
             isMoving.up = true;
             break;
@@ -970,11 +978,14 @@ document.addEventListener('keydown', (e) => {
         case 'd':
             isMoving.right = true;
             break;
+        case 'shift':
+            isMoving.sprint = true;
+            break;
     }
 });
 
 document.addEventListener('keyup', (e) => {
-    switch (e.key) {
+    switch (e.key.toLowerCase()) {  
         case 'w':
             isMoving.up = false;
             break;
@@ -986,6 +997,9 @@ document.addEventListener('keyup', (e) => {
             break;
         case 'd':
             isMoving.right = false;
+            break;
+        case 'shift':
+            isMoving.sprint = false;
             break;
     }
 });
@@ -1267,10 +1281,14 @@ function animate() {
             camera.rotation.x += (targetRotationX - camera.rotation.x) * smoothFactor;
             camera.rotation.y += (targetRotationY - camera.rotation.y) * smoothFactor;
 
-            if (isMoving.up) camera.position.y += moveSpeed;
-            if (isMoving.down) camera.position.y -= moveSpeed;
-            if (isMoving.left) camera.position.x -= moveSpeed;
-            if (isMoving.right) camera.position.x += moveSpeed;
+            // Calculate current movement speed
+            const currentMoveSpeed = isMoving.sprint ? moveSpeed * sprintMultiplier : moveSpeed;
+
+            // Apply movement
+            if (isMoving.up) camera.position.y += currentMoveSpeed;
+            if (isMoving.down) camera.position.y -= currentMoveSpeed;
+            if (isMoving.left) camera.position.x -= currentMoveSpeed;
+            if (isMoving.right) camera.position.x += currentMoveSpeed;
         }
 
         animateBlackHole();
@@ -1310,3 +1328,27 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 });
+
+function openModal(imgElement) {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+    
+    modal.style.display = "flex"; 
+    modalImg.src = imgElement.src;
+
+    modal.onclick = function(e) {
+        if (e.target === modal || e.target.className === 'close-icon') {
+            closeModal();
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+}
+
+function closeModal() {
+    document.getElementById("imageModal").style.display = "none";
+}

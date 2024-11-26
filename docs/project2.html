@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/backgroundhike.png" alt="Wireframe Example 1">
+                <img src="static/backgroundhike.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -30,8 +30,8 @@
             <h2>Research Plan</h2>
             <div class="image-gallery">
                 <div class="image-gallery">
-                    <img src="static/researchplan.png" alt="Wireframe Example 1">
-                    <img src="static/researchplanab.png" alt="Wireframe Example 1">
+                    <img src="static/researchplan.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                    <img src="static/researchplanab.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
                 </div>
             </div>
             <a href="https://stichtingfontys-my.sharepoint.com/:w:/r/personal/524010_student_fontys_nl/Documents/idk%20girl/sem%202/week%206-9%20-%20Media%20Campaign/ResearchPlan.docx?d=wd6d1415999b0473e9b41b80a80adb119&csf=1&web=1&e=qyMJCy" target="_blank" class="button">
@@ -48,8 +48,8 @@
         <section class="content-section">
             <h2>Analysis</h2>
             <div class="image-gallery">
-                <img src="static/analysis.png" alt="Wireframe Example 1">
-                <img src="static/analysisab.png" alt="Wireframe Example 1">
+                <img src="static/analysis.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                <img src="static/analysisab.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
             <div class="content">
                 <div class="text">
@@ -70,12 +70,12 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/prototypenm.png" alt="Wireframe Example 1">
-                <img src="static/prototypenn.png" alt="Wireframe Example 1">
+                <img src="static/prototypenm.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                <img src="static/prototypenn.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div> 
             <div class="image-gallery">
-                <img src="static/prototypecv.png" alt="Wireframe Example 1">
-                <img src="static/prototypevc.png" alt="Wireframe Example 1">
+                <img src="static/prototypecv.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                <img src="static/prototypevc.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div> 
             <a href="https://www.figma.com/design/wQAstQFVRLezV398nda5Ap/sem-2---dev-design?node-id=0-1&t=VTXUAF0z8vLsBjcZ-1" target="_blank" class="button">
                 Figma - Link
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/presentationhike.png" alt="Wireframe Example 1">
+                <img src="static/presentationhike.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
             <a href="https://stichtingfontys-my.sharepoint.com/:p:/r/personal/524911_student_fontys_nl/Documents/Hike%20one%20fix%20that%20ux.pptx?d=w097a3b4d16d242abb475ab305f293ffc&csf=1&web=1&e=TKcJoE" target="_blank" class="button">
                 Presentation - Link
@@ -114,5 +114,10 @@
     <footer>
         <p>® Luca Tomescu</p>
     </footer>
+
+    <div id="imageModal" class="image-modal">
+        <span class="close-icon">&times;</span>
+        <img class="image-modal-content" id="modalImage">
+    </div>
 </body>
 </html>

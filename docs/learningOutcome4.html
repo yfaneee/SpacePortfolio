@@ -26,8 +26,8 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/LO4a.png"  alt="Wireframe Example 1">
-                <img src="static/LO4b.png"  alt="Wireframe Example 2">
+                <img src="static/LO4a.png"  alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                <img src="static/LO4b.png"  alt="Wireframe Example 2" class="gallery-image" onclick="openModal(this)">
             </div>
             <div class="content">
                 <div class="text">
@@ -35,11 +35,11 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/LO4c.png" alt="Wireframe Example 1">
-                <img src="static/LO4d.png" alt="Wireframe Example 2">
+                <img src="static/LO4c.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                <img src="static/LO4d.png" alt="Wireframe Example 2" class="gallery-image" onclick="openModal(this)">
             </div>
             <div class="image-gallery">
-                <img src="static/LO4e.png" alt="Wireframe Example 1">
+                <img src="static/LO4e.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
             <div class="content">
                 <div class="text">
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/LO4f.png" alt="Wireframe Example 1">
+                <img src="static/LO4f.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -60,8 +60,8 @@
                 </div>       
             </div>
             <div class="image-gallery">
-                <img src="static/LO3ab.png" alt="Wireframe Example 1">
-                <img src="static/StylescapeWoodyFinal.png" alt="Wireframe Example 2">
+                <img src="static/LO3ab.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                <img src="static/StylescapeWoodyFinal.png" alt="Wireframe Example 2" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/LO4z.png" alt="Wireframe Example 1">
+                <img src="static/LO4z.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/allthework.png" alt="Wireframe Example 1">
+                <img src="static/allthework.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
     </main>
@@ -133,10 +133,10 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/LO4po.png" alt="Wireframe Example 1">
+                <img src="static/LO4po.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
             <div class="image-gallery">
-                <img src="static/LO4op.png" alt="Wireframe Example 1">
+                <img src="static/LO4op.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -164,7 +164,7 @@
                 </div>
             </div>
             <div class="image-gallery">
-                <img src="static/LO4oop.png" alt="Wireframe Example 1">
+                <img src="static/LO4oop.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
@@ -198,6 +198,11 @@
     <footer>
         <p>® Luca Tomescu</p>
     </footer>
+
+    <div id="imageModal" class="image-modal">
+        <span class="close-icon">&times;</span>
+        <img class="image-modal-content" id="modalImage">
+    </div>
 
 </body>
 </html>
