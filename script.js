@@ -270,6 +270,7 @@ function createStarField() {
     return stars;
 }
 
+// Create stars
 let stars = createStarField();  
 
 function createStarFieldWithOffsets() {
@@ -332,6 +333,7 @@ function createStarFieldWithOffsets() {
 
 createStarFieldWithOffsets();
 
+// Create stars
 function createStarFieldWithOffsetsSecond() {
     const starGeometry = new THREE.BufferGeometry();
     const starVertices = [];
@@ -390,6 +392,7 @@ function createStarFieldWithOffsetsSecond() {
     return stars;
 }
 
+// Create stars
 createStarFieldWithOffsetsSecond();
 
 function createStarFieldWithCustomOffsets() {
@@ -453,6 +456,7 @@ function createStarFieldWithCustomOffsets() {
 
 createStarFieldWithCustomOffsets();
 
+// Create stars
 function createStarFieldWithCustomOffsetsSecond() {
     const starGeometry = new THREE.BufferGeometry();
     const starVertices = [];
@@ -670,7 +674,6 @@ let documentationOpen = false;
 
 function loadDocumentationHTML(id) {
     const documentationElement = document.getElementById('documentation');
-    menuIcon.style.display = 'none';
     documentationOpen = true;
 
     documentationElement.scrollTop = 0;

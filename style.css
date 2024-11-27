@@ -402,6 +402,7 @@ main {
     margin: 10px 0;
 }
 
+
 footer {
     text-align: center;
     color: #777;
@@ -462,8 +463,18 @@ footer {
     height: auto;
 }
 
+.gallery-image.max-width-30 {
+    max-width: 37%;
+}
+
 .gallery-image:hover {
     opacity: 0.8;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; 
 }
 
 /* Modal content box styling */
