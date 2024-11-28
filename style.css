@@ -714,8 +714,9 @@ code {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 1);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: white;
@@ -731,6 +732,7 @@ code {
     border-top-color: white;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    margin-bottom: 15px;
 }
 
 @keyframes spin {
@@ -865,4 +867,38 @@ code {
 
 .send-button:hover {
     background-color: #0056b3;
+}
+
+.controls-info {
+    margin-top: 40px;
+    text-align: center;
+    max-width: 300px;
+}
+
+.controls-info h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 0.8em;
+}
+
+.controls-info ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.controls-info li {
+    margin: 5px 0;
+    font-size: 0.7em;
+}
+
+.zoom-hint {
+    position: absolute;
+    top: 20px;
+    left: 35%;
+    text-align: center;
+    color: white;
+    z-index: 1000;
 }

@@ -65,6 +65,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const welcomeModal = document.getElementById("welcome-modal");
     const closeModalButton = document.getElementById("close-modal");
 
+    let scrollTimeout;
+    let hasScrolled = false;
+
+    window.addEventListener('wheel', () => {
+        if (!hasScrolled) {
+            hasScrolled = true;
+            scrollTimeout = setTimeout(() => {
+                const zoomHint = document.getElementById('zoom-hint');
+                if (zoomHint) {
+                    zoomHint.remove();
+                }
+            }, 1000); 
+        }
+    });
+
     setTimeout(() => {
         welcomeModal.classList.add("show");
     }, 400); 
@@ -72,6 +87,13 @@ document.addEventListener("DOMContentLoaded", () => {
     closeModalButton.addEventListener("click", () => {
         welcomeModal.classList.remove("show");
     });
+
+    setTimeout(() => {
+        const zoomHint = document.getElementById('zoom-hint');
+        if (zoomHint && !hasScrolled) {
+            zoomHint.remove();
+        }
+    }, 20000);
 });
 
 // Toggle info dropdown visibility
@@ -1375,4 +1397,3 @@ function openModal(imgElement) {
 function closeModal() {
     document.getElementById("imageModal").style.display = "none";
 }
-

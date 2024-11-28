@@ -18,9 +18,24 @@
     <!-- DropDown Menu -->
     <div id="loading-overlay">
         <div class="spinner"></div>
-        <p>Loading...</p>
+        <p> Loading...</p>
+        <div class="controls-info">
+            <h3>Controls:</h3>
+            <ul>
+                <li>🖱️ Mouse: Rotate and explore</li>
+                <li>⚲ Scroll: Zoom in/out</li>
+                <li>⌨️ WASD: Move camera</li>
+                <li>⇧ Shift + WASD: Fast camera movement</li>
+                <li>↺ R: Reset camera</li>
+                <li>⛶ F11: Fullscreen</li>
+                <li>✨ Click constellations to interact</li>
+            </ul>
+        </div>
     </div>
-
+    
+    <div id="zoom-hint" class="zoom-hint">
+        <h1>Zoom in to explore!</h1>
+    </div>
     <!-- DropDown Menu -->
     <div id="menu-icon">
         <svg width="75" height="35" viewBox="0 0 66 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -156,6 +171,7 @@
 
     <!-- ResetCamera Bttn -->
     <button id="reset-camera">Reset Camera</button>
+
 
     <!-- JS -->
     <script src="script.js"></script>
