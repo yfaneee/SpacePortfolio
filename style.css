@@ -872,7 +872,7 @@ code {
 .controls-info {
     margin-top: 40px;
     text-align: center;
-    max-width: 300px;
+    max-width: 600px;
 }
 
 .controls-info h3 {
@@ -890,7 +890,7 @@ code {
 }
 
 .controls-info li {
-    margin: 5px 0;
+    margin: 12px 0;
     font-size: 0.7em;
 }
 
