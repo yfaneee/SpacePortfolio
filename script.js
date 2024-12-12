@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (zoomHint && !hasScrolled) {
             zoomHint.remove();
         }
-    }, 20000);
+    }, 30000);
 });
 
 // Toggle info dropdown visibility

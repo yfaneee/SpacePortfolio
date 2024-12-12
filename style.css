@@ -902,3 +902,9 @@ code {
     color: white;
     z-index: 1000;
 }
+
+@media (max-width: 1566px) {
+    .zoom-hint {
+        left: 30%;
+    }
+}
