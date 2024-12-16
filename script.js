@@ -594,7 +594,7 @@ function createProjectsConstellations() {
     const constellations = [
         { positions: [[-402, 275, -60], [-219, 255, -57], [-234, 220, -58], [-205, 197, -58]], name: 'Veneman en de Groot - Branding Project', id: 'project1' },
         { positions: [[-270, 230, -60], [-283, 216, -58], [-295, 223, -60]], name: 'Hike One - Media Campaign', id: 'project2' },
-        { positions: [[-316, 195, -59], [-340, 201, -60], [-330, 138, -55], [-290, 158, -55]], name: 'Project 3', id: 'project3' },
+        { positions: [[-316, 195, -59], [-340, 201, -60], [-330, 138, -55], [-290, 158, -55]], name: 'CZ - Development Project', id: 'project3' },
         { positions: [[-330, 239, -60], [-329, 245, -59], [-353, 230, -57]], name: 'Project 4', id: 'project4' }  
     ];
 
