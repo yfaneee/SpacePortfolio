@@ -12,11 +12,11 @@ Features
 
 Clone the repository:
 
-git clone https://github.com/yourusername/spaceportfolio.git
+/git clone https://git.fhict.nl/I503826/spaceportfolio
 
 Open the project directory:
 
-cd spaceportfolio
+/cd spaceportfolio
 
 Run the project on a live server.
 
@@ -46,4 +46,6 @@ LO3: Iterative Design.
  
 LO4: Professional Standard.
 
-LO5: Personal Leadership.
+LO5: Personal Leadership. 
+
+Contact.
