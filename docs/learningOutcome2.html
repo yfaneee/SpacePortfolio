@@ -293,14 +293,15 @@
             <h2>Action</h2>
             <div class="content">
                 <div class="text">
-                    <p class="spaced-text">To achieve an engaging and interactive navigation experience for my portfolio, I implemented a zoom-in functionality that allows users to click on star icons representing different learning outcomes. This zoom effect smoothly transitions the view towards the selected star, making the navigation both visually appealing and functional. Here’s a breakdown of how I approached this:
-
-                        <br>Zoom-In Navigation for Learning Outcomes
-                        
-                        <br>I designed the zoom-in navigation for each learning outcome to create an immersive experience. When a user clicks on a star representing a learning outcome, the camera smoothly zooms into the star, giving a sense of depth and interaction.
-                        Logic and Code Implementation
-                        
-                        <br>Below is the code that defines the zoom-in effect. I used the smoothZoomTo function to smoothly move the camera towards the target position and trigger the loading of related documentation content once the zoom is complete:</p>
+                    <p class="spaced-text">To create an engaging and interactive navigation experience for my portfolio, I implemented a zoom-in functionality for star icons representing different learning outcomes. When users click on a star, the camera smoothly zooms in, offering a visually appealing and immersive transition while loading the related documentation.</p>
+                </div>
+            </div>
+            <h2>Key Features:</h2>
+            <div class="content">
+                <div class="text">
+                    <p class="spaced-text">
+                        <br>○ Zoom-In Navigation: Designed to enhance user interaction by creating a sense of depth as the camera moves toward the selected star.
+                        <br>○ Logic and Implementation: Utilized a smoothZoomTo function to execute the zoom effect and trigger the display of relevant content upon completion.</p>
                 </div>
             </div>
             <pre><code class="language-JavaScript">
@@ -346,11 +347,10 @@ document.addEventListener('click', (event) => {
                             </code></pre>
             <div class="content">
                 <div class="text">
-                    <p class="spaced-text">I added an event listener for mouse clicks that calculates the mouse’s position on the screen. This allows the raycaster to detect which star (learning outcome) was clicked, and then the smoothZoomTo function zooms in on the selected star.
+                    <p class="spaced-text">○ I implemented an event listener for mouse clicks to calculate the mouse’s position on the screen. This enables the raycaster to detect which star (learning outcome) was clicked, triggering the smoothZoomTo function to zoom in on the selected star.
+
                         Loading Documentation
-                        
-                        <br>Once zoomed into a star, the relevant documentation loads dynamically from HTML files using the loadDocumentationHTML function:
-                        <br>This feature creates a seamless transition, with the documentation for each learning outcome appearing as an overlay. The close button allows the user to return to the main view easily.</p>
+                        <br>○ Once zoomed in, the relevant documentation dynamically loads from HTML files using the loadDocumentationHTML function. This creates a seamless transition, displaying the documentation as an overlay. A close button allows users to return easily to the main view.</p>
                 </div>
             </div>
         </section>
@@ -379,7 +379,12 @@ document.addEventListener('click', (event) => {
                         
                         <br>I received positive feedback that I’m progressing well and have established a solid foundation for my portfolio. This zoom-in navigation marks a significant milestone, as it forms the skeleton of the website.
                         Visual Improvements
-                        
+                        </p>
+                        <div class="image-gallery">
+                            <img src="static/LO2xc.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
+                            <img src="static/LO2xx.png" alt="Wireframe Example 2" class="gallery-image" onclick="openModal(this)">
+                        </div>
+                    <p class="spaced-text">
                         <br>Suggestions were made to work on refining the visuals, including:
                         Adding textures for planets to make the space theme feel more realistic.
                         Using HDRI maps to create a 3D background and enhance the immersive experience.
@@ -387,12 +392,9 @@ document.addEventListener('click', (event) => {
                         
                         <br>For documentation display, it was recommended to improve readability by:
                         Using a standard font and focusing on the layout for clearer presentation.
-                        Ensuring the UI of downsizing buttons is intuitive for users, as this could improve navigation between different sections of the site.</p>
+                        Ensuring the UI of downsizing buttons is intuitive for users, as this could improve navigation between different sections of the site.
+                    </p>
                 </div>
-            </div>
-            <div class="image-gallery">
-                <img src="static/LO2xc.png" alt="Wireframe Example 1" class="gallery-image" onclick="openModal(this)">
-                <img src="static/LO2xx.png" alt="Wireframe Example 2" class="gallery-image" onclick="openModal(this)">
             </div>
         </section>
 
