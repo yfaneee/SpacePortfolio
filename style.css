@@ -734,7 +734,7 @@ code {
 }
 
 .gif-left {
-    left: 50px;
+    left: 40px;
     top: 200px;
 }
 
@@ -743,7 +743,7 @@ code {
 }
 
 .gif-right {
-    right: 50px;
+    left: 1370px;
     top: 200px;
 }
 
