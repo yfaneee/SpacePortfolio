@@ -1,0 +1,6 @@
+
+# Original 8K HDR source for the space background (replaced by background-8k/4k.webp)
+static/background.exr
+
+# Original GIF sources (replaced by .mp4 versions)
+static/*.gif

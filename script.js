@@ -9,12 +9,17 @@ document.body.appendChild(renderer.domElement);
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 0, 50);
 
-console.log('EXRLoader: ', THREE.EXRLoader); 
+// Space background. Converted from the original 114MB EXR, which Git/Vercel could not
+// serve, into WebP: 8K where the GPU allows it, 4K everywhere else.
+const backgroundUrl = renderer.capabilities.maxTextureSize >= 8192
+    ? 'static/background-8k.webp'
+    : 'static/background-4k.webp';
 
-const exrLoader = new THREE.EXRLoader();
-exrLoader.load('static/background.exr', (texture) => {
+const backgroundLoader = new THREE.TextureLoader();
+backgroundLoader.load(backgroundUrl, (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene.background = texture;  
+    texture.encoding = THREE.sRGBEncoding;
+    scene.background = texture;
 });
 
 const clock = new THREE.Clock();
@@ -1377,9 +1382,28 @@ window.addEventListener('resize', () => {
 function openModal(imgElement) {
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImage");
-    
-    modal.style.display = "flex"; 
-    modalImg.src = imgElement.src;
+    const isVideo = imgElement.tagName === 'VIDEO';
+
+    // Animations are mp4 now, so the modal needs a <video> as well as the <img>
+    let modalVideo = document.getElementById("modalVideo");
+    if (isVideo && !modalVideo) {
+        modalVideo = document.createElement('video');
+        modalVideo.id = "modalVideo";
+        modalVideo.className = modalImg.className;
+        modalVideo.autoplay = true;
+        modalVideo.muted = true;
+        modalVideo.loop = true;
+        modalVideo.playsInline = true;
+        modalImg.parentNode.insertBefore(modalVideo, modalImg.nextSibling);
+    }
+
+    modal.style.display = "flex";
+    modalImg.style.display = isVideo ? "none" : "";
+    if (modalVideo) {
+        modalVideo.style.display = isVideo ? "" : "none";
+        if (isVideo) modalVideo.src = imgElement.currentSrc || imgElement.src;
+    }
+    if (!isVideo) modalImg.src = imgElement.src;
 
     modal.onclick = function(e) {
         if (e.target === modal || e.target.className === 'close-icon') {
@@ -1396,6 +1420,8 @@ function openModal(imgElement) {
 
 function closeModal() {
     document.getElementById("imageModal").style.display = "none";
+    const modalVideo = document.getElementById("modalVideo");
+    if (modalVideo) modalVideo.pause();
 }
 
 document.addEventListener('wheel', function(e) {

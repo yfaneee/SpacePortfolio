@@ -395,7 +395,8 @@ main {
     gap: 20px; 
 }
 
-.image-gallery img {
+.image-gallery img,
+.image-gallery video {
     max-width: 50%;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -738,7 +739,8 @@ code {
     top: 200px;
 }
 
-.gif-left img{
+.gif-left img,
+.gif-left video{
     height: 40%;
 }
 
@@ -747,7 +749,8 @@ code {
     top: 200px;
 }
 
-.gif-right img{
+.gif-right img,
+.gif-right video{
     height: 40%;
 }
 
